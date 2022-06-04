@@ -34,9 +34,9 @@
         <main>
             <div class="container-fluid mt-3">
                     <div class="row">
-                        <div class="h4 col-md-4 result"><p class="text-center">目標熱量:1600</p></div>
-                        <div class="h4 col-md-4 result"><p class="text-center">現在熱量:1250</p></div>
-                        <div class="h4 col-md-4 result"><p class="text-center">差分熱量:350</p></div>
+                        <div class="h4 col-md-4 result"><p class="text-center">目標上限:1500</p></div>
+                        <div class="h4 col-md-4 result"><p class="text-center">現在出費:1250</p></div>
+                        <div class="h4 col-md-4 result"><p class="text-center">差分出費:250</p></div>
                     </div>
                     <div class="table-responsive-md">
                         <table class="table table-hover table-striped text-nowrap">
@@ -45,8 +45,7 @@
                                     <th>#</th>
                                     <th>分類</th>
                                     <th>項目</th>
-                                    <th>熱量</th>
-                                    <th>画像</th>
+                                    <th>価格</th>
                                     <th>編集</th>
                                     <th>削除</th>
                                 </tr>
@@ -57,7 +56,6 @@
                                     <td><a href="detail.html">外食</a></td>
                                     <td>王将セット</td>
                                     <td>1250</td>
-                                    <td>画像</td>
                                     <td><a href="edit.php" class="btn btn-primary btn-xs">編集</a></td>
                                     <td><a href="" class="btn btn-primary btn-xs">削除</a></td>
                                 </tr>
@@ -67,7 +65,6 @@
                                     <td><a href="detail.html">外食</a></td>
                                     <td>王将セット</td>
                                     <td>1250</td>
-                                    <td>画像</td>
                                     <td><a href="edit.php" class="btn btn-primary btn-xs">編集</a></td>
                                     <td><a href="" class="btn btn-primary btn-xs">削除</a></td>
                                 </tr>
@@ -76,7 +73,6 @@
                                     <td><a href="detail.html">外食</a></td>
                                     <td>王将セット</td>
                                     <td>1250</td>
-                                    <td>画像</td>
                                     <td><a href="edit.php" class="btn btn-primary btn-xs">編集</a></td>
                                     <td><a href="" class="btn btn-primary btn-xs">削除</a></td>
                                 </tr>
@@ -85,7 +81,6 @@
                                     <td><a href="detail.html">外食</a></td>
                                     <td>王将セット</td>
                                     <td>1250</td>
-                                    <td>画像</td>
                                     <td><a href="edit.php" class="btn btn-primary btn-xs">編集</a></td>
                                     <td><a href="" class="btn btn-primary btn-xs">削除</a></td>
                                 </tr>
@@ -94,7 +89,6 @@
                                     <td><a href="detail.html">外食</a></td>
                                     <td>王将セット</td>
                                     <td>1250</td>
-                                    <td>画像</td>
                                     <td><a href="edit.php" class="btn btn-primary btn-xs">編集</a></td>
                                     <td><a href="" class="btn btn-primary btn-xs">削除</a></td>
                                 </tr>
@@ -103,7 +97,6 @@
                                     <td><a href="detail.html">外食</a></td>
                                     <td>王将セット</td>
                                     <td>1250</td>
-                                    <td>画像</td>
                                     <td><a href="edit.php" class="btn btn-primary btn-xs">編集</a></td>
                                     <td><a href="" class="btn btn-primary btn-xs">削除</a></td>
                                 </tr>
@@ -112,7 +105,6 @@
                                     <td><a href="detail.html">外食</a></td>
                                     <td>王将セット</td>
                                     <td>1250</td>
-                                    <td>画像</td>
                                     <td><a href="edit.php" class="btn btn-primary btn-xs">編集</a></td>
                                     <td><a href="" class="btn btn-primary btn-xs">削除</a></td>
                                 </tr>
@@ -121,7 +113,6 @@
                                     <td><a href="detail.html">外食</a></td>
                                     <td>王将セット</td>
                                     <td>1250</td>
-                                    <td>画像</td>
                                     <td><a href="edit.php" class="btn btn-primary btn-xs">編集</a></td>
                                     <td><a href="" class="btn btn-primary btn-xs">削除</a></td>
                                 </tr>
@@ -130,7 +121,6 @@
                                     <td><a href="detail.html">外食</a></td>
                                     <td>王将セット</td>
                                     <td>1250</td>
-                                    <td>画像</td>
                                     <td><a href="edit.php" class="btn btn-primary btn-xs">編集</a></td>
                                     <td><a href="" class="btn btn-primary btn-xs">削除</a></td>
                                 </tr>
@@ -139,7 +129,6 @@
                                     <td><a href="detail.html">外食</a></td>
                                     <td>王将セット</td>
                                     <td>1250</td>
-                                    <td>画像</td>
                                     <td><a href="edit.php" class="btn btn-primary btn-xs">編集</a></td>
                                     <td><a href="" class="btn btn-primary btn-xs">削除</a></td>
                                 </tr>
