@@ -28,13 +28,13 @@
 
 <body>
     <div style="padding-top: 50px;">
-    <?php include 'header.php';?>
+    <?php include 'calorieheader.php';?>
     <main>
         <div class="errorMsg"></div>
         <div class="container">
-            <form class="mt-3 pb-3" action="new.php" enctype="multipart/form-data" method="post" id="newform">
+            <form class="mt-4 pb-3" action="new.php" enctype="multipart/form-data" method="post" id="newform">
                 <div class="form-group row">
-                    <label for="hometown" class="col-sm-3 col-form-label">出身地</label>
+                    <label for="hometown" class="col-sm-3 col-form-label">分類</label>
                     <div class="col-sm-9">
                         <select class="form-control" name="birthplace" id="birthplace">
                             <option value="" selected>選択して下さい</option>
@@ -60,96 +60,18 @@
                         <div class="err_text" id="err_calorie"></div>
                     </div>
                 </div>
-                <fieldset class="form-group">
-                    <div class="row">
-                        <legend class="col-form-label col-sm-3 pt-0">血液型</legend>
-                        <div class="col-sm-9">
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="bloodtype" id="bloodTypeA" value="A">
-                                <label class="form-check-label" for="bloodTypeA">
-                                    A型
-                                </label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="bloodtype" id="bloodTypeB" value="B">
-                                <label class="form-check-label" for="bloodTypeB">
-                                    B型
-                                </label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="bloodtype" id="bloodTypeAB" value="AB">
-                                <label class="form-check-label" for="bloodTypeAB">
-                                    AB型
-                                </label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="bloodtype" id="bloodTypeO" value="O">
-                                <label class="form-check-label" for="bloodTypeO">
-                                    O型
-                                </label>
-                            </div>
-                            <div class="err_text" id="err_bloodtype"></div>
-                        </div>  
-                    </div>
-                </fieldset>
-                <fieldset class="form-group">
-                    <div class="row">
-                        <legend class="col-form-label col-sm-3 pt-0">分類</legend>
-                        <div class="col-sm-9">
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="category" id="announcer" value="局アナ">
-                                <label class="form-check-label" for="announcer">
-                                    局アナ
-                                </label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="category" id="free" value="フリー">
-                                <label class="form-check-label" for="free">
-                                    フリー
-                                </label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="category" id="actress" value="女優">
-                                <label class="form-check-label" for="actress">
-                                    女優
-                                </label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="category" id="model" value="モデル">
-                                <label class="form-check-label" for="model">
-                                    モデル
-                                </label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="category" id="other" value="それ以外">
-                                <label class="form-check-label" for="other">
-                                    その他
-                                </label>
-                            </div>
-                            <div class="err_text" id="err_categorytype"></div>
-                        </div>
-                    </div>
-                    
-                </fieldset>
                 <div class="form-group row">
-                    <label for="height" class="col-sm-3 col-form-label">身長（cm）</label>
+                    <label for="momentum" class="col-sm-3 col-form-label">運動量</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="height" placeholder="165" value="" name="height">
-                        <div class="err_text" id="err_heghtbox"></div>
+                        <input type="text" class="form-control" id="momentum" placeholder="運動量" value="" name="momentum">
+                        <div class="err_text" id="err_momentum"></div>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="speciality" class="col-sm-3 col-form-label">特記事項</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control" id="tgtspeciality" placeholder="特記事項" value="" name="notices">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="addImage" class="col-sm-3 col-form-label">画像（追加）</label>
+                    <label for="addImage" class="col-sm-3 col-form-label">画像</label>
                     <div class="col-sm-9">
                         <div class="custom-file">
-                            <!-- <input type="file" class="custom-file-input" id="addImage" lang="ja" name="picdata[]" multiple="multiple"> -->
-                            <input type="file" class="custom-file-input" id="addImage" lang="ja" name="picdata[]" multiple="multiple">
+                            <input type="file" name="picdata" class="form-control">
                             <label class="custom-file-label" for="addImage">ファイル選択...</label>
                         </div>
                     </div>
