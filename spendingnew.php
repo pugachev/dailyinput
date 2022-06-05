@@ -1,7 +1,31 @@
 <?php
+include 'lib/connect.php';
+// include 'lib/spendingData.php';
+include 'lib/querySpendingData.php';
 
+header('Expires: Tue, 1 Jan 2019 00:00:00 GMT');
+header('Last-Modified:' . gmdate( 'D, d M Y H:i:s' ) . 'GMT');
+header('Cache-Control:no-cache,no-store,must-revalidate,max-age=0');
+header('Cache-Control:pre-check=0,post-check=0',false);
+header('Pragma:no-cache');
 
+if(!empty($_POST['category']))
+{
+    //入力画面から取得した項目
+    $rcvCategory = $_POST['category'];
+    $rcvItem = $_POST['item'];
+    $rcvPrice = $_POST['price'];
+    $rcvQuantity = $_POST['quantity'];
 
+    $spendingdata = new SpendingData();
+    $spendingdata->setCategory($rcvCategory);
+    $spendingdata->setItem($rcvItem);
+    $spendingdata->setPrice($rcvPrice);
+    $spendingdata->setQuantity($rcvQuantity);
+
+    $spendingdata->save();
+    
+}
 ?>
 <!doctype html>
 <html lang="ja">
@@ -32,193 +56,123 @@
     <main>
         <div class="errorMsg"></div>
         <div class="container">
-            <form class="mt-4 pb-3" action="new.php" enctype="multipart/form-data" method="post" id="newform">
+            <form class="mt-4 pb-3" action="spendingnew.php" enctype="multipart/form-data" method="post" id="newform">
                 <div class="form-group row">
-                    <label for="hometown" class="col-sm-3 col-form-label">分類</label>
+                    <label for="category" class="col-sm-3 col-form-label">分類</label>
                     <div class="col-sm-9">
-                        <select class="form-control" name="birthplace" id="birthplace">
-                            <option value="" selected>選択して下さい</option>
-                            <option value="0">食費</option>
-                            <option value="1">日用品</option>
-                            <option value="2">Amazon</option>
-                            <option value="3">公共料金</option>
-                            <option value="4">税金</option>
-                            <option value="5">外食</option>
-                            <option value="6">その他</option>
+                        <select class="form-control" name="category" id="category">
+                            <option value="firstchoice" selected>選択して下さい</option>
+                            <option value="foods">食材</option>
+                            <option value="necessities">日用品</option>
+                            <option value="amazon">Amazon</option>
+                            <option value="publiccharge">公共料金</option>
+                            <option value="tax">税金</option>
+                            <option value="medical">医療費</option>
+                            <option value="eatingout">外食</option>
                         </select>
-                        <div class="err_text" id="err_birthplace"></div>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="item" class="col-sm-3 col-form-label">項目</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="item" placeholder="項目" value="" name="item">
-                        <div class="err_text" id="err_item"></div>
+                        <select class="form-control" name="item" id="item">
+                            <option value="0000" selected>選択して下さい</option>
+                            <option value="1001" class="foods">カレー</option>
+                            <option value="1002" class="foods">ラーメン</option>
+                            <option value="1003" class="foods">うどん</option>
+                            <option value="1004" class="foods">蕎麦</option>
+                            <option value="1005" class="foods">中華そば</option>
+                            <option value="1006" class="foods">チキン</option>
+                            <option value="1007" class="foods">コロッケ</option>
+                            <option value="1008" class="foods">野菜</option>
+                            <option value="1009" class="foods">お肉</option>
+                            <option value="1010" class="foods">ハンバーグ</option>
+                            <option value="1011" class="foods">アルコール</option>  
+                            <option value="1012" class="foods">お菓子</option>          
+                            <option value="2001" class="necessities">トイレ用品</option>
+                            <option value="2002" class="necessities">お風呂用品</option>
+                            <option value="2003" class="necessities">台所用品</option>
+                            <option value="2004" class="necessities">洗濯用品</option>
+                            <option value="2005" class="necessities">掃除用品</option>
+                            <option value="3001" class="amazon">PC用品</option>
+                            <option value="3002" class="amazon">Kindle本</option>
+                            <option value="3003" class="amazon">サプリメント</option>
+                            <option value="3004" class="amazon">アロマオ用品</option>
+                            <option value="3005" class="amazon">仏具用品</option>
+                            <option value="4001" class="publiccharge">水道代</option>
+                            <option value="4002" class="publiccharge">ガス代</option>
+                            <option value="4003" class="publiccharge">光熱費</option>
+                            <option value="4004" class="publiccharge">NHK</option>
+                            <option value="5001" class="medical">歯医者</option>
+                            <option value="5002" class="medical">内科</option>
+                            <option value="5003" class="medical">外科</option>
+                            <option value="5004" class="medical">検査</option>
+                            <option value="6001" class="outeat">中華</option>
+                            <option value="6002" class="outeat">ファストーフード</option>
+                            <option value="6003" class="outeat">洋食</option>
+                            <option value="6004" class="outeat">和食</option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="calorie" class="col-sm-3 col-form-label">熱量</label>
+                    <label for="price" class="col-sm-3 col-form-label">出費額</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="calorie" placeholder="カロリー" value="" name="calorie">
-                        <div class="err_text" id="err_calorie"></div>
+                        <input type="text" class="form-control" id="price" placeholder="出費額" value="" name="price">
+                        <div class="err_text" id="err_price"></div>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="momentum" class="col-sm-3 col-form-label">運動量</label>
+                    <label for="quantity" class="col-sm-3 col-form-label">個数</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="momentum" placeholder="運動量" value="" name="momentum">
-                        <div class="err_text" id="err_momentum"></div>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="addImage" class="col-sm-3 col-form-label">画像</label>
-                    <div class="col-sm-9">
-                        <div class="custom-file">
-                            <input type="file" name="picdata" class="form-control">
-                            <label class="custom-file-label" for="addImage">ファイル選択...</label>
-                        </div>
+                        <input type="text" class="form-control" id="quantity" placeholder="個数" value="" name="quantity">
+                        <div class="err_text" id="err_quantity"></div>
                     </div>
                 </div>
                 <div class="mb-5 d-flex justify-content-center align-items-center">
-                    <input type="button" class="btn btn-primary" value="新規登録" id="buttonNew"></input>
+                    <input type="submit" class="btn btn-primary mr-1" value="新規登録" id="buttonNew"></input>
+                    <input type="submit" class="btn btn-primary" value="キャンセル" id="buttonCancel"></input>
                 </div>
             </form>
         </div>
     </main>
     </div>
     <script type="text/javascript">
-            $("#buttonNew").on("click",function(){
-                if(!formCheck())
-                {
-                    return false;
-                }
-                else
-                {
-                    $("#newform").submit();
-                }
-
-            });
-
-            function deleteErrorMessage(tgt)
-            {
-                // $("#'+tg+t p").remove();
-                alert("クリックされた");
-                return false;
-            }
-
-            function formCheck(){
-                var ret=true;
-                //名前チェック(入力をチェック)
-                $("#err_namebox p").remove();
-                if($('input[name=womanname]').val()=='')
-                {
-                    $("#err_namebox").append("<p style='font-size:16px;color:red;'>お名前を入力してください。</p>");
-                    ret = false;
-                }
-
-                //年齢チェック(入力と数値チェック)
-                $("#err_agebox p").remove();
-                var tmpage = $('input[name="age"]').val();
-                if(tmpage=="" || !$.isNumeric(tmpage))
-                {
-                    $("#err_agebox").append("<p style='font-size:16px;color:red;'>年齢を入力してください。</p>");
-                    ret = false;
-                }
-                //生年月日(選択チェック)
-                $("#err_birthdaybox p").remove();
-                // if( $('input[name="date"]').text()=='')
-                if($("#dateOfBirth").val()=='')
-                {
-                    $("#err_birthdaybox").append("<p style='font-size:16px;color:red;'>生年月日を入力してください。</p>");
-                    ret = false;
-                }
-                //出身地(選択チェック)
-                $("#err_birthplace p").remove();
-                var selected = $('#birthplace option:selected');
-                if (!selected.val() || !selected.val()=='都道府県') {
-                    $("#err_birthplace").append("<p style='font-size:16px;color:red;'>出身地を入力してください。</p>");
-                    ret = false;
-                }
-
-                //血液型(選択をチェック)
-                $("#err_bloodtype p").remove();
-                var tmpbloodtyp = 0;
-                $('input[name=bloodtype]').each(function () {
-                    if ($(this).prop('checked')) { tmpbloodtyp++; }
-                });
-                if (tmpbloodtyp==0) {
-                    $('#err_bloodtype').append("<p style='font-size:16px;color:red;'>血液型を選択してください。</p>");
-                }
-                //分類(選択をチェック)
-                $("#err_categorytype p").remove();
-                var tmpcategory = 0;
-                $('input[name=category]').each(function () {
-                    if ($(this).prop('checked')) { tmpcategory++; }
-                });
-                if (tmpcategory==0) {
-                    $('#err_categorytype').append("<p style='font-size:16px;color:red;'>分類を選択してください。</p>");
-                }
-                //身長チェック(入力と数値チェック)
-                $("#err_heghtbox p").remove();
-                var tmpheight = $('input[name="height"]').val();
-                if(tmpheight=="" || !$.isNumeric(tmpheight))
-                {
-                    $("#err_heghtbox").append("<p style='font-size:16px;color:red;'>身長を入力してください。</p>");
-                    ret = false;
-                }
-                return ret;
-            }
-
-            //名前チェック
-            $("#womanname").bind("blur", function() {
-                $("#err_namebox p").remove();
-                if($('input[name="womanname"]').val()==""){
-                    $("#err_namebox").append("<p style='font-size:16px;color:red;'>名前を入力してください。</p>");
-                    return false;
-                }
-            });
-
-            //年齢チェック
-            $("#age").bind("blur", function() {
-                $("#err_agebox p").remove();
-                var tmpage = $('input[name="age"]').val();
-                if(tmpage=="" || !$.isNumeric(tmpage)){
-                    $("#err_agebox").append("<p style='font-size:16px;color:red;'>年齢を入力してください。</p>");
-                    return false;
-                }
-            });
-
-            //生年月日チェック
-            $("#birthday").bind("blur", function() {
-                $("#err_birthdaybox p").remove();
-                if($('input[type="date"]').val()==""){
-                    $("#err_birthdaybox").append("<p style='font-size:16px;color:red;'>生年月日を入力してください。</p>");
-                    return false;
-                }
-            });
-
-            //身長ボタンチェック
-            $("#height").bind("blur", function() {
-                $("#err_heghtbox p").remove();
-                if($('input[name="height"]').val()==""){
-                    $("#err_heghtbox").append("<p style='font-size:16px;color:red;'>身長を入力してください。</p>");
-                    return false;
-                }
-            });
             $(function(){
-                $('#dateOfBirth').change(function(){
-                    $("#err_birthdaybox p").remove();
-                });
-                $('#birthplace').change(function(){
-                    $("#err_birthplace p").remove();
-                });
-                $( 'input[name="bloodtype"]:radio' ).change( function() {
-                    $("#err_bloodtype p").remove();
-                });
-                $( 'input[name="category"]:radio' ).change( function() {
-                    $("#err_categorytype p").remove();
-                }); 
+                // selectbox コード選択左側
+                $("#category").on("change", change_select);
             });
+            // selectbox コード選択左側
+            function change_select(){
+                //onchange()が発火したらoption:selectedが切り替わるのでそれをとっている
+                var value = $("#category option:selected").attr("value");
+
+                //  #second option の要素数を取得
+                var count = $("#item option").length;
+                console.log(count);
+                for (var i=1; i<count; i++) 
+                {
+                    // #second option要素 ここに全ての要素が入っている
+                    var opt = $("#item option").eq(i);
+                    var cls = opt.attr("class");
+                    
+                    if (value == cls)
+                    {
+                        opt.show();
+                    }
+                    else if (value == "firstchoice")
+                    {
+                        //「コードを選択して下さい」
+                        opt.show();
+                    }
+                    else
+                    {
+                        opt.hide();
+                    }
+                }
+                // value 指定 左側のどのコードを選択してもあらためて「コードを選択して下さい」が表示される
+                $("#item").val("0000");
+            }
+
     </script>
     <?php include 'footer.php';?>
 

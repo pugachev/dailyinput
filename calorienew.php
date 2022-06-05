@@ -1,5 +1,49 @@
 <?php
+include 'lib/connect.php';
+// include 'lib/calorieData.php';
+include 'lib/queryCalorieData.php';
 
+header('Expires: Tue, 1 Jan 2019 00:00:00 GMT');
+header('Last-Modified:' . gmdate( 'D, d M Y H:i:s' ) . 'GMT');
+header('Cache-Control:no-cache,no-store,must-revalidate,max-age=0');
+header('Cache-Control:pre-check=0,post-check=0',false);
+header('Pragma:no-cache');
+
+if(!empty($_POST['category']))
+{
+    //入力画面から取得した項目
+    $rcvCategory = $_POST['category'];
+    $rcvItem = $_POST['item'];
+    $rcvQuantity = $_POST['quantity'];
+    $rcvCalorie = $_POST['calorie'];
+    $rcvMomentum = $_POST['momentum'];
+    $tgtfilename="";
+    if (!empty($_FILES['picdata']['name'])) 
+    {
+        $tgtfilename = date("YmdHis");
+        $tgtfilename .= '.' . substr(strrchr($_FILES['picdata']['name'], '.'), 1);//アップロードされたファイルの拡張子を取得
+        $file = "upload/$tgtfilename";
+
+        move_uploaded_file($_FILES['picdata']['tmp_name'], 'upload/' . $tgtfilename);//imagesディレクトリにファイル保存
+        if (exif_imagetype($file)) {
+            //画像ファイルかのチェック
+        } else {
+            // $message = '画像ファイルではありません';
+        }
+    }
+
+    $caloriedata = new CalorieData();
+    $caloriedata->setCategory($rcvCategory);
+    $caloriedata->setItem($rcvItem);
+    $caloriedata->setCalorie($rcvCalorie);
+    $caloriedata->setQuantity($rcvQuantity);
+    $caloriedata->setMomen($rcvMomentum);
+    $caloriedata->setPicdata($tgtfilename);
+
+    $caloriedata->save();
+
+    
+}
 
 
 ?>
@@ -32,25 +76,46 @@
     <main>
         <div class="errorMsg"></div>
         <div class="container">
-            <form class="mt-4 pb-3" action="new.php" enctype="multipart/form-data" method="post" id="newform">
+            <form class="mt-4 pb-3" action="calorienew.php" enctype="multipart/form-data" method="post" id="newform">
                 <div class="form-group row">
-                    <label for="hometown" class="col-sm-3 col-form-label">分類</label>
+                    <label for="category" class="col-sm-3 col-form-label">分類</label>
                     <div class="col-sm-9">
-                        <select class="form-control" name="birthplace" id="birthplace">
-                            <option value="" selected>選択して下さい</option>
-                            <option value="外食">外食</option>
-                            <option value="お惣菜">お惣菜</option>
-                            <option value="お菓子">お菓子</option>
-                            <option value="酒">酒</option>
+                        <select class="form-control" name="category" id="category">
+                            <option value="firstchoice" selected>選択して下さい</option>
+                            <option value="foods">食材</option>
+                            <option value="eatingout">外食</option>
                         </select>
-                        <div class="err_text" id="err_birthplace"></div>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="item" class="col-sm-3 col-form-label">項目</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="item" placeholder="項目" value="" name="item">
-                        <div class="err_text" id="err_item"></div>
+                        <select class="form-control" name="item" id="item">
+                            <option value="0000" selected>選択して下さい</option>
+                            <option value="1001" class="foods">カレー</option>
+                            <option value="1002" class="foods">ラーメン</option>
+                            <option value="1003" class="foods">うどん</option>
+                            <option value="1004" class="foods">蕎麦</option>
+                            <option value="1005" class="foods">中華そば</option>
+                            <option value="1006" class="foods">チキン</option>
+                            <option value="1007" class="foods">コロッケ</option>
+                            <option value="1008" class="foods">野菜</option>
+                            <option value="1009" class="foods">お肉</option>
+                            <option value="1010" class="foods">ハンバーグ</option>
+                            <option value="1011" class="foods">アルコール</option>  
+                            <option value="1012" class="foods">お菓子</option>  
+                            <option value="6001" class="medical">中華</option>
+                            <option value="6002" class="medical">ファストーフード</option>
+                            <option value="6003" class="medical">洋食</option>
+                            <option value="6004" class="medical">和食</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="quantity" class="col-sm-3 col-form-label">個数</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="quantity" placeholder="個数" value="" name="quantity">
+                        <div class="err_text" id="err_quantity"></div>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -77,145 +142,48 @@
                     </div>
                 </div>
                 <div class="mb-5 d-flex justify-content-center align-items-center">
-                    <input type="button" class="btn btn-primary" value="新規登録" id="buttonNew"></input>
+                    <input type="submit" class="btn btn-primary" value="新規登録" id="buttonNew"></input>
                 </div>
             </form>
         </div>
     </main>
     </div>
     <script type="text/javascript">
-            $("#buttonNew").on("click",function(){
-                if(!formCheck())
-                {
-                    return false;
-                }
-                else
-                {
-                    $("#newform").submit();
-                }
-
-            });
-
-            function deleteErrorMessage(tgt)
-            {
-                // $("#'+tg+t p").remove();
-                alert("クリックされた");
-                return false;
-            }
-
-            function formCheck(){
-                var ret=true;
-                //名前チェック(入力をチェック)
-                $("#err_namebox p").remove();
-                if($('input[name=womanname]').val()=='')
-                {
-                    $("#err_namebox").append("<p style='font-size:16px;color:red;'>お名前を入力してください。</p>");
-                    ret = false;
-                }
-
-                //年齢チェック(入力と数値チェック)
-                $("#err_agebox p").remove();
-                var tmpage = $('input[name="age"]').val();
-                if(tmpage=="" || !$.isNumeric(tmpage))
-                {
-                    $("#err_agebox").append("<p style='font-size:16px;color:red;'>年齢を入力してください。</p>");
-                    ret = false;
-                }
-                //生年月日(選択チェック)
-                $("#err_birthdaybox p").remove();
-                // if( $('input[name="date"]').text()=='')
-                if($("#dateOfBirth").val()=='')
-                {
-                    $("#err_birthdaybox").append("<p style='font-size:16px;color:red;'>生年月日を入力してください。</p>");
-                    ret = false;
-                }
-                //出身地(選択チェック)
-                $("#err_birthplace p").remove();
-                var selected = $('#birthplace option:selected');
-                if (!selected.val() || !selected.val()=='都道府県') {
-                    $("#err_birthplace").append("<p style='font-size:16px;color:red;'>出身地を入力してください。</p>");
-                    ret = false;
-                }
-
-                //血液型(選択をチェック)
-                $("#err_bloodtype p").remove();
-                var tmpbloodtyp = 0;
-                $('input[name=bloodtype]').each(function () {
-                    if ($(this).prop('checked')) { tmpbloodtyp++; }
-                });
-                if (tmpbloodtyp==0) {
-                    $('#err_bloodtype').append("<p style='font-size:16px;color:red;'>血液型を選択してください。</p>");
-                }
-                //分類(選択をチェック)
-                $("#err_categorytype p").remove();
-                var tmpcategory = 0;
-                $('input[name=category]').each(function () {
-                    if ($(this).prop('checked')) { tmpcategory++; }
-                });
-                if (tmpcategory==0) {
-                    $('#err_categorytype').append("<p style='font-size:16px;color:red;'>分類を選択してください。</p>");
-                }
-                //身長チェック(入力と数値チェック)
-                $("#err_heghtbox p").remove();
-                var tmpheight = $('input[name="height"]').val();
-                if(tmpheight=="" || !$.isNumeric(tmpheight))
-                {
-                    $("#err_heghtbox").append("<p style='font-size:16px;color:red;'>身長を入力してください。</p>");
-                    ret = false;
-                }
-                return ret;
-            }
-
-            //名前チェック
-            $("#womanname").bind("blur", function() {
-                $("#err_namebox p").remove();
-                if($('input[name="womanname"]').val()==""){
-                    $("#err_namebox").append("<p style='font-size:16px;color:red;'>名前を入力してください。</p>");
-                    return false;
-                }
-            });
-
-            //年齢チェック
-            $("#age").bind("blur", function() {
-                $("#err_agebox p").remove();
-                var tmpage = $('input[name="age"]').val();
-                if(tmpage=="" || !$.isNumeric(tmpage)){
-                    $("#err_agebox").append("<p style='font-size:16px;color:red;'>年齢を入力してください。</p>");
-                    return false;
-                }
-            });
-
-            //生年月日チェック
-            $("#birthday").bind("blur", function() {
-                $("#err_birthdaybox p").remove();
-                if($('input[type="date"]').val()==""){
-                    $("#err_birthdaybox").append("<p style='font-size:16px;color:red;'>生年月日を入力してください。</p>");
-                    return false;
-                }
-            });
-
-            //身長ボタンチェック
-            $("#height").bind("blur", function() {
-                $("#err_heghtbox p").remove();
-                if($('input[name="height"]').val()==""){
-                    $("#err_heghtbox").append("<p style='font-size:16px;color:red;'>身長を入力してください。</p>");
-                    return false;
-                }
-            });
             $(function(){
-                $('#dateOfBirth').change(function(){
-                    $("#err_birthdaybox p").remove();
-                });
-                $('#birthplace').change(function(){
-                    $("#err_birthplace p").remove();
-                });
-                $( 'input[name="bloodtype"]:radio' ).change( function() {
-                    $("#err_bloodtype p").remove();
-                });
-                $( 'input[name="category"]:radio' ).change( function() {
-                    $("#err_categorytype p").remove();
-                }); 
+                // selectbox コード選択左側
+                $("#category").on("change", change_select);
             });
+            // selectbox コード選択左側
+            function change_select(){
+                //onchange()が発火したらoption:selectedが切り替わるのでそれをとっている
+                var value = $("#category option:selected").attr("value");
+
+                //  #second option の要素数を取得
+                var count = $("#item option").length;
+                console.log(count);
+                for (var i=1; i<count; i++) 
+                {
+                    // #second option要素 ここに全ての要素が入っている
+                    var opt = $("#item option").eq(i);
+                    var cls = opt.attr("class");
+                    
+                    if (value == cls)
+                    {
+                        opt.show();
+                    }
+                    else if (value == "firstchoice")
+                    {
+                        //「コードを選択して下さい」
+                        opt.show();
+                    }
+                    else
+                    {
+                        opt.hide();
+                    }
+                }
+                // value 指定 左側のどのコードを選択してもあらためて「コードを選択して下さい」が表示される
+                $("#item").val("0000");
+            }
     </script>
     <?php include 'footer.php';?>
 
