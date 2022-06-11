@@ -34,6 +34,11 @@
         <main>
             <div class="container-fluid mt-3">
                     <div class="row">
+                        <div class="h5 col-md-4 result"><p class="text-center">前日</p></div>
+                        <div class="h5 col-md-4 result"><p class="text-center">2022/06/11</p></div>
+                        <div class="h5 col-md-4 result"><p class="text-center">翌日</p></div>
+                    </div>
+                    <div class="row">
                         <div class="h4 col-md-4 result"><p class="text-center">目標熱量:1600</p></div>
                         <div class="h4 col-md-4 result"><p class="text-center">現在熱量:1250</p></div>
                         <div class="h4 col-md-4 result"><p class="text-center">差分熱量:350</p></div>
