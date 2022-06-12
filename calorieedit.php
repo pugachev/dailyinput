@@ -1,7 +1,7 @@
 <?php
 include 'lib/connect.php';
-// include 'lib/spendingData.php';
-include 'lib/querySpendingData.php';
+// include 'lib/calorieData.php';
+include 'lib/queryCalorieData.php';
 
 header('Expires: Tue, 1 Jan 2019 00:00:00 GMT');
 header('Last-Modified:' . gmdate( 'D, d M Y H:i:s' ) . 'GMT');
@@ -14,18 +14,38 @@ if(!empty($_POST['category']))
     //入力画面から取得した項目
     $rcvCategory = $_POST['category'];
     $rcvItem = $_POST['item'];
-    $rcvPrice = $_POST['price'];
     $rcvQuantity = $_POST['quantity'];
+    $rcvCalorie = $_POST['calorie'];
+    $rcvMomentum = $_POST['momentum'];
+    $tgtfilename="";
+    if (!empty($_FILES['picdata']['name'])) 
+    {
+        $tgtfilename = date("YmdHis");
+        $tgtfilename .= '.' . substr(strrchr($_FILES['picdata']['name'], '.'), 1);//アップロードされたファイルの拡張子を取得
+        $file = "upload/$tgtfilename";
 
-    $spendingdata = new SpendingData();
-    $spendingdata->setCategory($rcvCategory);
-    $spendingdata->setItem($rcvItem);
-    $spendingdata->setPrice($rcvPrice);
-    $spendingdata->setQuantity($rcvQuantity);
+        move_uploaded_file($_FILES['picdata']['tmp_name'], 'upload/' . $tgtfilename);//imagesディレクトリにファイル保存
+        if (exif_imagetype($file)) {
+            //画像ファイルかのチェック
+        } else {
+            // $message = '画像ファイルではありません';
+        }
+    }
 
-    $spendingdata->save();
+    $caloriedata = new CalorieData();
+    $caloriedata->setCategory($rcvCategory);
+    $caloriedata->setItem($rcvItem);
+    $caloriedata->setCalorie($rcvCalorie);
+    $caloriedata->setQuantity($rcvQuantity);
+    $caloriedata->setMomen($rcvMomentum);
+    $caloriedata->setPicdata($tgtfilename);
+
+    $caloriedata->save();
+
     
 }
+
+
 ?>
 <!doctype html>
 <html lang="ja">
@@ -39,6 +59,8 @@ if(!empty($_POST['category']))
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://getbootstrap.com/docs/4.3/assets/css/docs.min.css" crossorigin="anonymous">
+    <!-- bootstrap-datepickerを読み込む -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
     <style>
         @media (max-width: 600px) {
             .title {
@@ -49,16 +71,16 @@ if(!empty($_POST['category']))
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-    <title>新規登録画面</title>
+    <title>編集画面</title>
 </head>
 
 <body>
     <div style="padding-top: 50px;">
-    <?php include 'spendingheader.php';?>
+    <?php include 'calorieheader.php';?>
     <main>
         <div class="errorMsg"></div>
         <div class="container">
-            <form class="mt-4 pb-3" action="spendingnew.php" enctype="multipart/form-data" method="post" id="newform">
+            <form class="mt-4 pb-3" action="calorienew.php" enctype="multipart/form-data" method="post" id="newform">
                 <div class="form-group row">
                     <label for="calorie_date" class="col-sm-3 col-form-label">カロリー/日</label>
                     <div class="col-sm-9">
@@ -71,11 +93,6 @@ if(!empty($_POST['category']))
                         <select class="form-control" name="category" id="category">
                             <option value="firstchoice" selected>選択して下さい</option>
                             <option value="foods">食材</option>
-                            <option value="necessities">日用品</option>
-                            <option value="amazon">Amazon</option>
-                            <option value="publiccharge">公共料金</option>
-                            <option value="tax">税金</option>
-                            <option value="medical">医療費</option>
                             <option value="eatingout">外食</option>
                         </select>
                     </div>
@@ -96,37 +113,12 @@ if(!empty($_POST['category']))
                             <option value="1009" class="foods">お肉</option>
                             <option value="1010" class="foods">ハンバーグ</option>
                             <option value="1011" class="foods">アルコール</option>  
-                            <option value="1012" class="foods">お菓子</option>          
-                            <option value="2001" class="necessities">トイレ用品</option>
-                            <option value="2002" class="necessities">お風呂用品</option>
-                            <option value="2003" class="necessities">台所用品</option>
-                            <option value="2004" class="necessities">洗濯用品</option>
-                            <option value="2005" class="necessities">掃除用品</option>
-                            <option value="3001" class="amazon">PC用品</option>
-                            <option value="3002" class="amazon">Kindle本</option>
-                            <option value="3003" class="amazon">サプリメント</option>
-                            <option value="3004" class="amazon">アロマオ用品</option>
-                            <option value="3005" class="amazon">仏具用品</option>
-                            <option value="4001" class="publiccharge">水道代</option>
-                            <option value="4002" class="publiccharge">ガス代</option>
-                            <option value="4003" class="publiccharge">光熱費</option>
-                            <option value="4004" class="publiccharge">NHK</option>
-                            <option value="5001" class="medical">歯医者</option>
-                            <option value="5002" class="medical">内科</option>
-                            <option value="5003" class="medical">外科</option>
-                            <option value="5004" class="medical">検査</option>
-                            <option value="6001" class="outeat">中華</option>
-                            <option value="6002" class="outeat">ファストーフード</option>
-                            <option value="6003" class="outeat">洋食</option>
-                            <option value="6004" class="outeat">和食</option>
+                            <option value="1012" class="foods">お菓子</option>  
+                            <option value="6001" class="medical">中華</option>
+                            <option value="6002" class="medical">ファストーフード</option>
+                            <option value="6003" class="medical">洋食</option>
+                            <option value="6004" class="medical">和食</option>
                         </select>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="price" class="col-sm-3 col-form-label">出費額</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control" id="price" placeholder="出費額" value="" name="price">
-                        <div class="err_text" id="err_price"></div>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -136,9 +128,24 @@ if(!empty($_POST['category']))
                         <div class="err_text" id="err_quantity"></div>
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label for="calorie" class="col-sm-3 col-form-label">熱量</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="calorie" placeholder="カロリー" value="" name="calorie">
+                        <div class="err_text" id="err_calorie"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="addImage" class="col-sm-3 col-form-label">画像</label>
+                    <div class="col-sm-9">
+                        <div class="custom-file">
+                            <input type="file" name="picdata" class="form-control">
+                            <label class="custom-file-label" for="addImage">ファイル選択...</label>
+                        </div>
+                    </div>
+                </div>
                 <div class="mb-5 d-flex justify-content-center align-items-center">
-                    <input type="submit" class="btn btn-primary mr-1" value="新規登録" id="buttonNew"></input>
-                    <input type="submit" class="btn btn-primary" value="キャンセル" id="buttonCancel"></input>
+                    <input type="submit" class="btn btn-primary" value="新規登録" id="buttonNew"></input>
                 </div>
             </form>
         </div>
@@ -182,6 +189,7 @@ if(!empty($_POST['category']))
                 // value 指定 左側のどのコードを選択してもあらためて「コードを選択して下さい」が表示される
                 $("#item").val("0000");
             }
+
 
     </script>
     <?php include 'footer.php';?>

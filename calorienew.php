@@ -59,6 +59,8 @@ if(!empty($_POST['category']))
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://getbootstrap.com/docs/4.3/assets/css/docs.min.css" crossorigin="anonymous">
+    <!-- bootstrap-datepickerを読み込む -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
     <style>
         @media (max-width: 600px) {
             .title {
@@ -66,7 +68,9 @@ if(!empty($_POST['category']))
             }
         }
     </style>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
     <title>新規登録画面</title>
 </head>
 
@@ -77,6 +81,12 @@ if(!empty($_POST['category']))
         <div class="errorMsg"></div>
         <div class="container">
             <form class="mt-4 pb-3" action="calorienew.php" enctype="multipart/form-data" method="post" id="newform">
+                <div class="form-group row">
+                    <label for="calorie_date" class="col-sm-3 col-form-label">カロリー/日</label>
+                    <div class="col-sm-9">
+                    <input type="date" class="form-control" id="tgtdate">
+                    </div>
+                </div>
                 <div class="form-group row">
                     <label for="category" class="col-sm-3 col-form-label">分類</label>
                     <div class="col-sm-9">
@@ -126,13 +136,6 @@ if(!empty($_POST['category']))
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="momentum" class="col-sm-3 col-form-label">運動量</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control" id="momentum" placeholder="運動量" value="" name="momentum">
-                        <div class="err_text" id="err_momentum"></div>
-                    </div>
-                </div>
-                <div class="form-group row">
                     <label for="addImage" class="col-sm-3 col-form-label">画像</label>
                     <div class="col-sm-9">
                         <div class="custom-file">
@@ -150,6 +153,8 @@ if(!empty($_POST['category']))
     </div>
     <script type="text/javascript">
             $(function(){
+                // 日付設定
+                $('#tgtdate').datepicker();
                 // selectbox コード選択左側
                 $("#category").on("change", change_select);
             });
@@ -184,6 +189,8 @@ if(!empty($_POST['category']))
                 // value 指定 左側のどのコードを選択してもあらためて「コードを選択して下さい」が表示される
                 $("#item").val("0000");
             }
+
+
     </script>
     <?php include 'footer.php';?>
 

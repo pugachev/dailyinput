@@ -1,0 +1,38 @@
+table.calender_column{
+    width: 100%;
+    /* max-height: calc(50%); */
+    /* max-height: calc(100%-60px); */
+}
+
+table.calender_column td{
+    padding: 2px;
+    border: 1px solid #CCC;
+}
+
+/* 日曜日 */
+table.calender_column tr.week0{
+    background-color: #ffefef;
+    color: #FF0000;
+}
+
+/* 土曜日 */
+table.calender_column tr.week6{
+    background-color: #ededff;
+    color: #0000FF;
+}
+
+/* 今日 */
+table.calender_column tr.today{
+    background-color: #fbffa3;
+    font-weight: bold;
+}
+
+table.calender_column td:first-child{
+    width: 20%;
+    text-align: center;
+}
+
+table.calender_column td:last-child{
+    width: 80%;
+    color: #111111;
+}

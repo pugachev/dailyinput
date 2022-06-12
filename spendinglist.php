@@ -29,7 +29,7 @@
 </head>
 
 <body style=" padding-top: 50px;">
-    <?php include 'calorieheader.php';?>
+    <?php include 'spendingheader.php';?>
     <div class="container mb-3">
         <main>
             <div class="container-fluid mt-3">
@@ -61,7 +61,7 @@
                                     <td><a href="detail.html">外食</a></td>
                                     <td>王将セット</td>
                                     <td>1250</td>
-                                    <td><a href="edit.php" class="btn btn-primary btn-xs">編集</a></td>
+                                    <td><a href="spendingedit.php" class="btn btn-primary btn-xs">編集</a></td>
                                     <td><a href="" class="btn btn-primary btn-xs">削除</a></td>
                                 </tr>
 

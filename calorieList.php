@@ -145,7 +145,7 @@
                                     <td>王将セット</td>
                                     <td>1250</td>
                                     <td>画像</td>
-                                    <td><a href="edit.php" class="btn btn-primary btn-xs">編集</a></td>
+                                    <td><a href="calorieedit.php" class="btn btn-primary btn-xs">編集</a></td>
                                     <td><a href="" class="btn btn-primary btn-xs">削除</a></td>
                                 </tr>
                             </tbody>
