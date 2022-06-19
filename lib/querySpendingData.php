@@ -22,44 +22,37 @@ class QuerySpendingData extends connect
     public function save()
     {
         $rcvId = $this->spendingdata->getId();
+        $rcvTxtdate = $this->spendingdata->getTgtDate();
         $rcvCategory = $this->spendingdata->getCategory();
         $rcvItem = $this->spendingdata->getItem();
         $rcvQuantity = $this->spendingdata->getQuantity();
         $rcvPrice = $this->spendingdata->getPrice();
-        $rcvDelFlag = $this->spendingdata->getDelFlag();
+        // $rcvDelFlag = $this->spendingdata->getDelFlag();
+        $rcvDelFlag = 0;
 
         try
         {
-            if (!empty($this->spendingdata->getId()))
+            if (!empty($rcvId))
             {
-                
                 // IDがあるときは上書き
-                $id = $this->spendingdata->getId();
                 $stmt = $this->dbh->prepare("UPDATE dailyspending
-                SET category=:category, item=:item, quantity=:quantity,price=:price, delflag=:delflag,updated_at=NOW() WHERE id=:id");
+                SET tgtdate=:tgtdate,category=:category, item=:item, quantity=:quantity,price=:price, delflag=:delflag,updated_at=NOW() WHERE id=:id");
                 $stmt->bindParam(':id', $rcvId, PDO::PARAM_INT);
             }
             else 
             {
                 // IDがなければ新規作成
-                $stmt = $this->dbh->prepare("INSERT INTO dailyspending (category, item, quantity,price, delflag,created_at, updated_at) VALUES (:category, :item, :quantity,:price, :delflag,NOW(), NOW())");                                                                     
+                $stmt = $this->dbh->prepare("INSERT INTO dailyspending (tgtdate,category, item, quantity,price, delflag,created_at, updated_at) 
+                VALUES (:tgtdate,:category, :item, :quantity,:price, :delflag,NOW(), NOW())");                                                                     
             }
-            
+            $stmt->bindParam(':tgtdate', $rcvTxtdate, PDO::PARAM_STR);
             $stmt->bindParam(':category', $rcvCategory, PDO::PARAM_STR);
             $stmt->bindParam(':item', $rcvItem, PDO::PARAM_INT);
             $stmt->bindParam(':quantity', $rcvQuantity, PDO::PARAM_INT);
             $stmt->bindParam(':price', $rcvPrice, PDO::PARAM_INT);
             $stmt->bindParam(':delflag', $rcvDelFlag, PDO::PARAM_INT);
-
             $stmt->execute();
 
-
-            //stockテーブルの対象itemの値を増やす
-            $stock = new QueryStockData();
-            $stock->increase($rcvCategory,$rcvItem,$rcvQuantity);
-        
-
-            
         }
         catch( Exception $ex )
         {
@@ -70,10 +63,10 @@ class QuerySpendingData extends connect
     /**
      * 全データを取得する
      */
-    public function getAllData($page = 1, $limit = 8)
+    public function getAllData($tgtdate,$page = 1, $limit = 8)
     {
         //画面に渡すデータ連携
-        $pager = array('totalcnt' => null, 'persons' => null);
+        $pager = array('totalcnt' => null, 'datas' => null);
         //ページ番号
         $start = ($page - 1) * $limit; 
         //総記事数
@@ -82,21 +75,30 @@ class QuerySpendingData extends connect
         $limit=8;
         try
         {
-            //現在の総記事数を取得する
-            $stmt = $this->dbh->prepare("SELECT COUNT(*) as totalcnt FROM personaldata");
+            //対象日付の総データ数を取得する
+            $stmt = $this->dbh->prepare("SELECT COUNT(*) as totalcnt FROM dailyspending where tgtdate=:tgtdate");
+            $stmt->bindParam(':tgtdate', $tgtdate, PDO::PARAM_STR);
             $stmt->execute();
             $totalcnt= $stmt->fetch(PDO::FETCH_COLUMN);
 
-            //現在登録している全ての個人データを取得する
-            $stmt = $this->dbh->prepare("SELECT  * FROM personaldata LIMIT :start, :limit");
+            //対象日付の総データを取得する
+            $stmt = $this->dbh->prepare("SELECT  ds.id as id ,ds.tgtdate as tgtdate, ds.category as category,im.itemname as itemname, ds.price as price,ds.quantity as quantity FROM dailyspending as ds left join items as im on ds.item = im.item where tgtdate=:tgtdate LIMIT :start, :limit");
+            $stmt->bindParam(':tgtdate', $tgtdate, PDO::PARAM_STR);
             $stmt->bindParam(':start', $start, PDO::PARAM_INT);
             $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
             $stmt->execute();
             $data = $this->setAllData($stmt->fetchAll(PDO::FETCH_ASSOC));
 
+            //対象日付の総出費額を取得する
+            $stmt = $this->dbh->prepare("SELECT sum(price) FROM dailyspending  group by tgtdate having tgtdate=:tgtdate");
+            $stmt->bindParam(':tgtdate', $tgtdate, PDO::PARAM_STR);
+            $stmt->execute();
+            $sumprice = $stmt->fetch(PDO::FETCH_COLUMN);
+
             //一般用トップ画面に渡すためのデータを格納する
             $pager['totalcnt'] = $totalcnt;
-            $pager['people'] = $data;
+            $pager['data'] = $data;
+            $pager['sumprice']=$sumprice;
     
         }
         catch(Exception $ex)
@@ -132,43 +134,23 @@ class QuerySpendingData extends connect
      */
     public function getDatum($id)
     {
-
         try
         {
-            $stmt = $this->dbh->prepare("SELECT  * FROM personaldata WHERE id=:id");
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt = $this->dbh->prepare("SELECT  * FROM dailyspending WHERE id=:id");
+            $stmt->bindParam(':id', $id, PDO::PARAM_STR);
             $stmt->execute();
-            $datum = $this->setDatum($stmt->fetchAll(PDO::FETCH_ASSOC));
+            $datum = $this->setDatum($stmt->fetch(PDO::FETCH_ASSOC));
 
         }
         catch(Exception $ex)
         {
-            return "DB:Error";
+            return 'DB:Error';
         }
 
         return $datum;
     }
 
-    /**
-     * 名前からデータが存在するかを調べる
-     */
-    public function getDatumByName($tgtname)
-    {
-        try
-        {
-            $stmt = $this->dbh->prepare("SELECT  * FROM personaldata WHERE womanname=:womanname");
-            $stmt->bindParam(':womanname', $tgtname, PDO::PARAM_STR);
-            $stmt->execute();
-            $datum = $this->setDatumByName($stmt->fetchAll(PDO::FETCH_ASSOC));
 
-        }
-        catch(Exception $ex)
-        {
-            return "DB:Error";
-        }
-
-        return $datum;
-    }
 
     /**
      * 取得した全データをデータクラス(PersonalData)の配列にする
@@ -178,19 +160,13 @@ class QuerySpendingData extends connect
         $tmp = array();
         foreach ($resutls as $result) 
         {
-            $pd = new PersonalData();
+            $pd = new SpendingData();
             $pd->setId($result["id"]);
-            $pd->setName($result["womanname"]);
-            $pd->setAge($result["age"]);
+            $pd->setTxtDate($result["tgtdate"]);
             $pd->setCategory($result["category"]);
-            $pd->setBirthday($result["birthday"]);
-            $pd->setBirthplace($result["birthplace"]);
-            $pd->setBloodtype($result["bloodtype"]);
-            $pd->setHeight($result["height"]);
-            $pd->setNotices($result["notices"]);
-            $pd->setPicdata0($result["picdata0"]);
-            $pd->setPicdata1($result["picdata1"]);
-            $pd->setPicdata2($result["picdata2"]);
+            $pd->setItem($result["itemname"]);
+            $pd->setPrice($result["price"]);
+            $pd->setQuantity($result["quantity"]);
 
             $tmp[] = $pd;
         }
@@ -202,19 +178,13 @@ class QuerySpendingData extends connect
      */
     public function setDatum($result)
     {
-        $pd = new PersonalData();
-        $pd->setId($result[0]["id"]);
-        $pd->setName($result[0]["womanname"]);
-        $pd->setAge($result[0]["age"]);
-        $pd->setCategory($result[0]["category"]);
-        $pd->setBirthday($result[0]["birthday"]);
-        $pd->setBirthplace($result[0]["birthplace"]);
-        $pd->setBloodtype($result[0]["bloodtype"]);
-        $pd->setHeight($result[0]["height"]);
-        $pd->setNotices($result[0]["notices"]);
-        $pd->setPicdata0($result[0]["picdata0"]);
-        $pd->setPicdata1($result[0]["picdata1"]);
-        $pd->setPicdata2($result[0]["picdata2"]);
+        $pd = new SpendingData();
+        $pd->setId($result["id"]);
+        $pd->setTxtDate($result["tgtdate"]);
+        $pd->setCategory($result["category"]);
+        $pd->setItem($result["item"]);
+        $pd->setPrice($result["price"]);
+        $pd->setQuantity($result["quantity"]);
 
         return $pd;
     }

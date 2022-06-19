@@ -12,12 +12,19 @@ header('Pragma:no-cache');
 if(!empty($_POST['category']))
 {
     //入力画面から取得した項目
+    // 対象日
+    $rcvTgtDate=$_POST['tgtdate'];
+    // カテゴリ
     $rcvCategory = $_POST['category'];
+    // 項目
     $rcvItem = $_POST['item'];
+    // 出費額
     $rcvPrice = $_POST['price'];
+    // 個数
     $rcvQuantity = $_POST['quantity'];
 
     $spendingdata = new SpendingData();
+    $spendingdata->setTxtDate($rcvTgtDate);
     $spendingdata->setCategory($rcvCategory);
     $spendingdata->setItem($rcvItem);
     $spendingdata->setPrice($rcvPrice);
@@ -60,9 +67,9 @@ if(!empty($_POST['category']))
         <div class="container">
             <form class="mt-4 pb-3" action="spendingnew.php" enctype="multipart/form-data" method="post" id="newform">
                 <div class="form-group row">
-                    <label for="calorie_date" class="col-sm-3 col-form-label">カロリー/日</label>
+                    <label for="tgtdate" class="col-sm-3 col-form-label">対象日</label>
                     <div class="col-sm-9">
-                    <input type="date" class="form-control" id="tgtdate">
+                    <input type="date" class="form-control" id="tgtdate" name="tgtdate">
                     </div>
                 </div>
                 <div class="form-group row">

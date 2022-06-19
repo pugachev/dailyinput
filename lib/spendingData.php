@@ -2,6 +2,7 @@
 class SpendingData
 {
     private $id=null;
+    private $tgtdate = null;
     private $category = null;
     private $item = null;
     private $quantity = null;
@@ -20,6 +21,11 @@ class SpendingData
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getTgtDate()
+    {
+        return $this->tgtdate;
     }
 
     public function getCategory()
@@ -51,6 +57,11 @@ class SpendingData
     public function setId($id)
     {
         $this->id=$id;
+    }
+
+    public function setTxtDate($tgtdate)
+    {
+        $this->tgtdate = $tgtdate;
     }
 
     public function setCategory($category)
