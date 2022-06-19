@@ -27,7 +27,6 @@ class QuerySpendingData extends connect
         $rcvItem = $this->spendingdata->getItem();
         $rcvQuantity = $this->spendingdata->getQuantity();
         $rcvPrice = $this->spendingdata->getPrice();
-        // $rcvDelFlag = $this->spendingdata->getDelFlag();
         $rcvDelFlag = 0;
 
         try
@@ -111,23 +110,7 @@ class QuerySpendingData extends connect
 
         return $pager;
     }
-    // public function getAllData()
-    // {
 
-    //     try
-    //     {
-    //         $stmt = $this->dbh->prepare("SELECT  * FROM personaldata");
-    //         $stmt->execute();
-    //         $data = $this->setAllData($stmt->fetchAll(PDO::FETCH_ASSOC));
-    
-    //     }
-    //     catch(Exception $ex)
-    //     {
-    //         return "DB:Error";
-    //     }
-
-    //     return $data;
-    // }
 
     /**
      * 指定したIDのデータを取得する
