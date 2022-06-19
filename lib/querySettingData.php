@@ -54,9 +54,7 @@ class QuerySettingData extends connect
             //stockテーブルの対象itemの値を増やす
             // $stock = new QueryStockData();
             // $stock->increase($rcvCategory,$rcvItem,$rcvQuantity);
-        
 
-            
         }
         catch( Exception $ex )
         {
@@ -117,23 +115,6 @@ class QuerySettingData extends connect
 
         return $pager;
     }
-    // public function getAllData()
-    // {
-
-    //     try
-    //     {
-    //         $stmt = $this->dbh->prepare("SELECT  * FROM personaldata");
-    //         $stmt->execute();
-    //         $data = $this->setAllData($stmt->fetchAll(PDO::FETCH_ASSOC));
-    
-    //     }
-    //     catch(Exception $ex)
-    //     {
-    //         return "DB:Error";
-    //     }
-
-    //     return $data;
-    // }
 
     /**
      * 指定したIDのデータを取得する
