@@ -35,6 +35,10 @@ if(!empty($_POST['id']))
     $spendingdata->setQuantity($tgtquantity);
 
     $spendingdata->save();
+
+    $tgturl = 'Location: https://ikefukuro40.tech/dailyinput/spendingedit.php?id='.$id;
+
+    header($tgturl);
 }
 ?>
 <!doctype html>
@@ -106,7 +110,8 @@ if(!empty($_POST['id']))
                             <option value="1009" class="foods" <?php if($result->getItem()=='1009') echo 'selected'; ?>>お肉</option>
                             <option value="1010" class="foods" <?php if($result->getItem()=='1010') echo 'selected'; ?>>ハンバーグ</option>
                             <option value="1011" class="foods" <?php if($result->getItem()=='1011') echo 'selected'; ?>>アルコール</option>  
-                            <option value="1012" class="foods" <?php if($result->getItem()=='1012') echo 'selected'; ?>>お菓子</option>          
+                            <option value="1012" class="foods" <?php if($result->getItem()=='1012') echo 'selected'; ?>>お菓子</option> 
+                            <option value="1013" class="foods" <?php if($result->getItem()=='1013') echo 'selected'; ?>>おにぎり</option>            
                             <option value="2001" class="necessities" <?php if($result->getItem()=='2001') echo 'selected'; ?>>トイレ用品</option>
                             <option value="2002" class="necessities" <?php if($result->getItem()=='2002') echo 'selected'; ?>>お風呂用品</option>
                             <option value="2003" class="necessities" <?php if($result->getItem()=='2003') echo 'selected'; ?>>台所用品</option>
@@ -115,7 +120,7 @@ if(!empty($_POST['id']))
                             <option value="3001" class="amazon" <?php if($result->getItem()=='3001') echo 'selected'; ?>>PC用品</option>
                             <option value="3002" class="amazon" <?php if($result->getItem()=='3002') echo 'selected'; ?>>Kindle本</option>
                             <option value="3003" class="amazon" <?php if($result->getItem()=='3003') echo 'selected'; ?>>サプリメント</option>
-                            <option value="3004" class="amazon" <?php if($result->getItem()=='3004') echo 'selected'; ?>>アロマオ用品</option>
+                            <option value="3004" class="amazon" <?php if($result->getItem()=='3004') echo 'selected'; ?>>アロマ用品</option>
                             <option value="3005" class="amazon" <?php if($result->getItem()=='3005') echo 'selected'; ?>>仏具用品</option>
                             <option value="4001" class="publiccharge" <?php if($result->getItem()=='4001') echo 'selected'; ?>>水道代</option>
                             <option value="4002" class="publiccharge" <?php if($result->getItem()=='4002') echo 'selected'; ?>>ガス代</option>
@@ -147,7 +152,7 @@ if(!empty($_POST['id']))
                     </div>
                 </div>
                 <div class="mb-5 d-flex justify-content-center align-items-center">
-                    <input type="submit" class="btn btn-primary mr-1" value="新規登録" id="buttonNew"></input>
+                    <input type="submit" class="btn btn-primary mr-1" value="更新" id="buttonNew"></input>
                     <input type="submit" class="btn btn-primary" value="キャンセル" id="buttonCancel"></input>
                 </div>
 
@@ -158,10 +163,10 @@ if(!empty($_POST['id']))
     </div>
     <script type="text/javascript">
             $(function(){
-                // 日付設定
-                $('#tgtdate').datepicker();
                 // selectbox コード選択左側
                 $("#category").on("change", change_select);
+                // 日付設定
+                $('#tgtdate').datepicker();
             });
             // selectbox コード選択左側
             function change_select(){

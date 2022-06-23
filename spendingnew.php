@@ -103,7 +103,8 @@ if(!empty($_POST['category']))
                             <option value="1009" class="foods">お肉</option>
                             <option value="1010" class="foods">ハンバーグ</option>
                             <option value="1011" class="foods">アルコール</option>  
-                            <option value="1012" class="foods">お菓子</option>          
+                            <option value="1012" class="foods">お菓子</option>
+                            <option value="1013" class="foods">おにぎり</option>     
                             <option value="2001" class="necessities">トイレ用品</option>
                             <option value="2002" class="necessities">お風呂用品</option>
                             <option value="2003" class="necessities">台所用品</option>
@@ -112,7 +113,7 @@ if(!empty($_POST['category']))
                             <option value="3001" class="amazon">PC用品</option>
                             <option value="3002" class="amazon">Kindle本</option>
                             <option value="3003" class="amazon">サプリメント</option>
-                            <option value="3004" class="amazon">アロマオ用品</option>
+                            <option value="3004" class="amazon">アロマ用品</option>
                             <option value="3005" class="amazon">仏具用品</option>
                             <option value="4001" class="publiccharge">水道代</option>
                             <option value="4002" class="publiccharge">ガス代</option>
@@ -153,10 +154,10 @@ if(!empty($_POST['category']))
     </div>
     <script type="text/javascript">
             $(function(){
-                // 日付設定
-                $('#tgtdate').datepicker();
                 // selectbox コード選択左側
                 $("#category").on("change", change_select);
+                // 日付設定
+                $('#tgtdate').datepicker();
             });
             // selectbox コード選択左側
             function change_select(){
