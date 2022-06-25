@@ -22,12 +22,12 @@ class QueryCalorieData extends connect
     public function save()
     {
         $rcvId = $this->caloriedata->getId();
+        $rcvTgtDate = $this->caloriedata->getTgtDate();
         $rcvCategory = $this->caloriedata->getCategory();
         $rcvItem = $this->caloriedata->getItem();
         $rcvCalorie = $this->caloriedata->getCalorie();
-        $rcvMomentum = $this->caloriedata->getMomentum();
         $rcvQuantity = $this->caloriedata->getQuantity();
-        $rcvPicdata = $this->caloriedata->getPicdata();
+        // $rcvPicdata = $this->caloriedata->getPicdata();
         // $rcvDelFlag = $this->caloriedata->getDelFlag();
         $rcvDelFlag = 0;
         try
@@ -37,22 +37,22 @@ class QueryCalorieData extends connect
                 
                 // IDがあるときは上書き
                 $id = $this->caloriedata->getId();
-                $stmt = $this->dbh->prepare("UPDATE dailycalorie SET category=:category, item=:item, quantity=:quantity,calorie=:calorie, momentum=:momentum,delflag=:delflag,picdata=:picdata,updated_at=NOW() WHERE id=:id");
+                $stmt = $this->dbh->prepare("UPDATE dailycalorie SET tgtdate=:tgtdate,category=:category, item=:item, quantity=:quantity,calorie=:calorie, delflag=:delflag,updated_at=NOW() WHERE id=:id");
                 $stmt->bindParam(':id', $rcvId, PDO::PARAM_INT);
             }
             else 
             {
                 // IDがなければ新規作成
-                $stmt = $this->dbh->prepare("INSERT INTO dailycalorie (category, item, quantity,calorie, momentum,picdata,delflag,created_at, updated_at) VALUES (:category, :item, :quantity,:calorie,:momentum,:picdata,:delflag,NOW(), NOW())");                                                                     
+                $stmt = $this->dbh->prepare("INSERT INTO dailycalorie (tgtdate,category, item, quantity,calorie, delflag,created_at, updated_at) VALUES (:tgtdate,:category, :item, :quantity,:calorie,:delflag,NOW(), NOW())");                                                                     
             }
-            
+            $stmt->bindParam(':tgtdate', $rcvTgtDate, PDO::PARAM_STR);
             $stmt->bindParam(':category', $rcvCategory, PDO::PARAM_STR);
             $stmt->bindParam(':item', $rcvItem, PDO::PARAM_STR);
             $stmt->bindParam(':quantity', $rcvQuantity, PDO::PARAM_INT);
             $stmt->bindParam(':calorie', $rcvCalorie, PDO::PARAM_INT);
-            $stmt->bindParam(':momentum', $rcvMomentum, PDO::PARAM_INT);
-            $stmt->bindParam(':picdata', $rcvPicdata, PDO::PARAM_STR);
-            $stmt->bindParam(':delflag', $rcvDelFlag, PDO::PARAM_INT);
+            // $stmt->bindParam(':picdata', $rcvPicdata, PDO::PARAM_STR);
+            // $stmt->bindParam(':delflag', $rcvDelFlag, PDO::PARAM_INT);
+            $stmt->bindParam(':delflag', $rcvDelFlag ,PDO::PARAM_INT);
             // $stmt->debugDumpParams();
             $stmt->execute();
 
@@ -85,12 +85,12 @@ class QueryCalorieData extends connect
         try
         {
             //現在の総記事数を取得する
-            $stmt = $this->dbh->prepare("SELECT COUNT(*) as totalcnt FROM personaldata");
+            $stmt = $this->dbh->prepare("SELECT COUNT(*) as totalcnt FROM dailycalorie");
             $stmt->execute();
             $totalcnt= $stmt->fetch(PDO::FETCH_COLUMN);
 
             //現在登録している全ての個人データを取得する
-            $stmt = $this->dbh->prepare("SELECT  * FROM personaldata LIMIT :start, :limit");
+            $stmt = $this->dbh->prepare("SELECT  * FROM dailycalorie LIMIT :start, :limit");
             $stmt->bindParam(':start', $start, PDO::PARAM_INT);
             $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
             $stmt->execute();
@@ -98,7 +98,7 @@ class QueryCalorieData extends connect
 
             //一般用トップ画面に渡すためのデータを格納する
             $pager['totalcnt'] = $totalcnt;
-            $pager['people'] = $data;
+            $pager['data'] = $data;
     
         }
         catch(Exception $ex)
@@ -180,21 +180,15 @@ class QueryCalorieData extends connect
         $tmp = array();
         foreach ($resutls as $result) 
         {
-            $pd = new PersonalData();
-            $pd->setId($result["id"]);
-            $pd->setName($result["womanname"]);
-            $pd->setAge($result["age"]);
-            $pd->setCategory($result["category"]);
-            $pd->setBirthday($result["birthday"]);
-            $pd->setBirthplace($result["birthplace"]);
-            $pd->setBloodtype($result["bloodtype"]);
-            $pd->setHeight($result["height"]);
-            $pd->setNotices($result["notices"]);
-            $pd->setPicdata0($result["picdata0"]);
-            $pd->setPicdata1($result["picdata1"]);
-            $pd->setPicdata2($result["picdata2"]);
+            $qd = new CalorieData();
+            $qd->setId($result["id"]);
+            $qd->setTgtDate($result["tgtdate"]);
+            $qd->setCategory($result["category"]);
+            $qd->setItem($result["item"]);
+            $qd->setQuantity($result["quantity"]);
+            $qd->setCalorie($result["calorie"]);
 
-            $tmp[] = $pd;
+            $tmp[] = $qd;
         }
         return  $tmp;
     }
@@ -214,9 +208,9 @@ class QueryCalorieData extends connect
         $pd->setBloodtype($result[0]["bloodtype"]);
         $pd->setHeight($result[0]["height"]);
         $pd->setNotices($result[0]["notices"]);
-        $pd->setPicdata0($result[0]["picdata0"]);
-        $pd->setPicdata1($result[0]["picdata1"]);
-        $pd->setPicdata2($result[0]["picdata2"]);
+        // $pd->setPicdata0($result[0]["picdata0"]);
+        // $pd->setPicdata1($result[0]["picdata1"]);
+        // $pd->setPicdata2($result[0]["picdata2"]);
 
         return $pd;
     }

@@ -9,36 +9,36 @@ header('Cache-Control:no-cache,no-store,must-revalidate,max-age=0');
 header('Cache-Control:pre-check=0,post-check=0',false);
 header('Pragma:no-cache');
 
-if(!empty($_POST['category']))
+if(!empty($_POST['tgtdate']))
 {
     //入力画面から取得した項目
+    $rcvTgtDate = $_POST['tgtdate'];
     $rcvCategory = $_POST['category'];
     $rcvItem = $_POST['item'];
     $rcvQuantity = $_POST['quantity'];
     $rcvCalorie = $_POST['calorie'];
-    $rcvMomentum = $_POST['momentum'];
     $tgtfilename="";
-    if (!empty($_FILES['picdata']['name'])) 
-    {
-        $tgtfilename = date("YmdHis");
-        $tgtfilename .= '.' . substr(strrchr($_FILES['picdata']['name'], '.'), 1);//アップロードされたファイルの拡張子を取得
-        $file = "upload/$tgtfilename";
+    // if (!empty($_FILES['picdata']['name'])) 
+    // {
+    //     $tgtfilename = date("YmdHis");
+    //     $tgtfilename .= '.' . substr(strrchr($_FILES['picdata']['name'], '.'), 1);//アップロードされたファイルの拡張子を取得
+    //     $file = "upload/$tgtfilename";
 
-        move_uploaded_file($_FILES['picdata']['tmp_name'], 'upload/' . $tgtfilename);//imagesディレクトリにファイル保存
-        if (exif_imagetype($file)) {
-            //画像ファイルかのチェック
-        } else {
-            // $message = '画像ファイルではありません';
-        }
-    }
+    //     move_uploaded_file($_FILES['picdata']['tmp_name'], 'upload/' . $tgtfilename);//imagesディレクトリにファイル保存
+    //     if (exif_imagetype($file)) {
+    //         //画像ファイルかのチェック
+    //     } else {
+    //         // $message = '画像ファイルではありません';
+    //     }
+    // }
 
     $caloriedata = new CalorieData();
+    $caloriedata->setTgtDate($rcvTgtDate);
     $caloriedata->setCategory($rcvCategory);
     $caloriedata->setItem($rcvItem);
     $caloriedata->setCalorie($rcvCalorie);
     $caloriedata->setQuantity($rcvQuantity);
-    $caloriedata->setMomen($rcvMomentum);
-    $caloriedata->setPicdata($tgtfilename);
+    // $caloriedata->setPicdata($tgtfilename);
 
     $caloriedata->save();
 
@@ -82,9 +82,9 @@ if(!empty($_POST['category']))
         <div class="container">
             <form class="mt-4 pb-3" action="calorienew.php" enctype="multipart/form-data" method="post" id="newform">
                 <div class="form-group row">
-                    <label for="calorie_date" class="col-sm-3 col-form-label">カロリー/日</label>
+                    <label for="tgtdate" class="col-sm-3 col-form-label">カロリー/日</label>
                     <div class="col-sm-9">
-                    <input type="date" class="form-control" id="tgtdate">
+                    <input type="date" class="form-control" id="tgtdate" name="tgtdate">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -114,10 +114,11 @@ if(!empty($_POST['category']))
                             <option value="1010" class="foods">ハンバーグ</option>
                             <option value="1011" class="foods">アルコール</option>  
                             <option value="1012" class="foods">お菓子</option>  
-                            <option value="6001" class="medical">中華</option>
-                            <option value="6002" class="medical">ファストーフード</option>
-                            <option value="6003" class="medical">洋食</option>
-                            <option value="6004" class="medical">和食</option>
+                            <option value="1013" class="foods">おにぎり</option>  
+                            <option value="6001" class="eatingout">中華</option>
+                            <option value="6002" class="eatingout">ファストーフード</option>
+                            <option value="6003" class="eatingout">洋食</option>
+                            <option value="6004" class="eatingout">和食</option>
                         </select>
                     </div>
                 </div>
@@ -135,7 +136,7 @@ if(!empty($_POST['category']))
                         <div class="err_text" id="err_calorie"></div>
                     </div>
                 </div>
-                <div class="form-group row">
+                <!-- <div class="form-group row">
                     <label for="addImage" class="col-sm-3 col-form-label">画像</label>
                     <div class="col-sm-9">
                         <div class="custom-file">
@@ -143,7 +144,7 @@ if(!empty($_POST['category']))
                             <label class="custom-file-label" for="addImage">ファイル選択...</label>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="mb-5 d-flex justify-content-center align-items-center">
                     <input type="submit" class="btn btn-primary" value="新規登録" id="buttonNew"></input>
                 </div>
@@ -153,10 +154,10 @@ if(!empty($_POST['category']))
     </div>
     <script type="text/javascript">
             $(function(){
-                // 日付設定
-                $('#tgtdate').datepicker();
                 // selectbox コード選択左側
                 $("#category").on("change", change_select);
+                // 日付設定
+                $('#tgtdate').datepicker();
             });
             // selectbox コード選択左側
             function change_select(){

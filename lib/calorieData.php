@@ -2,11 +2,11 @@
 class CalorieData
 {
     private $id=null;
+    private $tgtdate=null;
     private $category = null;
     private $item = null;
     private $calorie = null;
     private $quantity = null;
-    private $momentum = null;
     private $picdata = null;
     private $delflag = null;
 
@@ -22,6 +22,11 @@ class CalorieData
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getTgtDate()
+    {
+        return $this->tgtdate;
     }
 
     public function getCategory()
@@ -44,11 +49,6 @@ class CalorieData
         return $this->quantity;
     }
 
-    public function getMomentum()
-    {
-        return $this->momentum;
-    }
-
     public function getPicdata()
     {
         return $this->picdata;
@@ -63,6 +63,11 @@ class CalorieData
     public function setId($id)
     {
         $this->id=$id;
+    }
+
+    public function setTgtDate($tgtdate)
+    {
+        $this->tgtdate=$tgtdate;
     }
 
     public function setCategory($category)
@@ -85,10 +90,6 @@ class CalorieData
         $this->quantity=$quantity;
     }
 
-    public function setMomen($momentum)
-    {
-        $this->momentum=$momentum;
-    }
 
     public function setPicdata($picdata)
     {

@@ -177,9 +177,9 @@ class QuerySettingData extends connect
             $pd->setBloodtype($result["bloodtype"]);
             $pd->setHeight($result["height"]);
             $pd->setNotices($result["notices"]);
-            $pd->setPicdata0($result["picdata0"]);
-            $pd->setPicdata1($result["picdata1"]);
-            $pd->setPicdata2($result["picdata2"]);
+            // $pd->setPicdata0($result["picdata0"]);
+            // $pd->setPicdata1($result["picdata1"]);
+            // $pd->setPicdata2($result["picdata2"]);
 
             $tmp[] = $pd;
         }
@@ -201,9 +201,9 @@ class QuerySettingData extends connect
         $pd->setBloodtype($result[0]["bloodtype"]);
         $pd->setHeight($result[0]["height"]);
         $pd->setNotices($result[0]["notices"]);
-        $pd->setPicdata0($result[0]["picdata0"]);
-        $pd->setPicdata1($result[0]["picdata1"]);
-        $pd->setPicdata2($result[0]["picdata2"]);
+        // $pd->setPicdata0($result[0]["picdata0"]);
+        // $pd->setPicdata1($result[0]["picdata1"]);
+        // $pd->setPicdata2($result[0]["picdata2"]);
 
         return $pd;
     }

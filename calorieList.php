@@ -1,5 +1,56 @@
 <?php
+    include 'lib/connect.php';
+    include 'lib/queryCalorieData.php';
+    include 'lib/querySettingData.php';
 
+    header('Expires: Tue, 1 Jan 2019 00:00:00 GMT');
+    header('Last-Modified:' . gmdate( 'D, d M Y H:i:s' ) . 'GMT');
+    header('Cache-Control:no-cache,no-store,must-revalidate,max-age=0');
+    header('Cache-Control:pre-check=0,post-check=0',false);
+    header('Pragma:no-cache');
+
+    $preday="";
+    $tgtday="";
+    $nextdate="";
+
+    if(!empty($_GET['preday']))
+    {
+        //パラメータより本日の日付を取得する
+        $tgtday = $_GET['preday'];
+        //システムより前日の日付を取得する
+        $preday = date("Y-m-d",strtotime($tgtday."-1 day"));
+        //システムより翌日の日付を取得する
+        $nextdate = date("Y-m-d",strtotime($tgtday."+1 day"));
+    }
+    else if(!empty($_GET['nextdate']))
+    {
+        //パラメータより本日の日付を取得する
+        $tgtday = $_GET['nextdate'];
+        //システムより前日の日付を取得する
+        $preday = date("Y-m-d",strtotime($tgtday."-1 day"));
+        //システムより翌日の日付を取得する
+        $nextdate = date("Y-m-d",strtotime($tgtday."+1 day"));
+    }
+    else
+    {
+        //システムより前日の日付を取得する
+        $preday = date("Y-m-d",strtotime('-1 day'));
+        //システムより本日の日付を取得する
+        $tgtday = date("Y-m-d");
+        //システムより翌日の日付を取得する
+        $nextdate  = date("Y-m-d",strtotime('+1 day'));
+    }
+
+    //指定日の全データを取得する
+    $querySpendingData = new QuerySpendingData();
+    $results=$querySpendingData->getAllData($tgtday);
+
+    //設定値を取得する
+    $querySettingData = new QuerySettingData();
+    $maxspending=$querySettingData->getSettingData();
+
+    //目標上限値 - 実際出費額 = 差分出費
+    $diffSpending = intval($maxspending) - intval($results['sumprice']);
 
 
 

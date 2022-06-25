@@ -16,29 +16,27 @@ if(!empty($_POST['category']))
     $rcvItem = $_POST['item'];
     $rcvQuantity = $_POST['quantity'];
     $rcvCalorie = $_POST['calorie'];
-    $rcvMomentum = $_POST['momentum'];
     $tgtfilename="";
-    if (!empty($_FILES['picdata']['name'])) 
-    {
-        $tgtfilename = date("YmdHis");
-        $tgtfilename .= '.' . substr(strrchr($_FILES['picdata']['name'], '.'), 1);//アップロードされたファイルの拡張子を取得
-        $file = "upload/$tgtfilename";
+    // if (!empty($_FILES['picdata']['name'])) 
+    // {
+    //     $tgtfilename = date("YmdHis");
+    //     $tgtfilename .= '.' . substr(strrchr($_FILES['picdata']['name'], '.'), 1);//アップロードされたファイルの拡張子を取得
+    //     $file = "upload/$tgtfilename";
 
-        move_uploaded_file($_FILES['picdata']['tmp_name'], 'upload/' . $tgtfilename);//imagesディレクトリにファイル保存
-        if (exif_imagetype($file)) {
-            //画像ファイルかのチェック
-        } else {
-            // $message = '画像ファイルではありません';
-        }
-    }
+    //     move_uploaded_file($_FILES['picdata']['tmp_name'], 'upload/' . $tgtfilename);//imagesディレクトリにファイル保存
+    //     if (exif_imagetype($file)) {
+    //         //画像ファイルかのチェック
+    //     } else {
+    //         // $message = '画像ファイルではありません';
+    //     }
+    // }
 
     $caloriedata = new CalorieData();
     $caloriedata->setCategory($rcvCategory);
     $caloriedata->setItem($rcvItem);
     $caloriedata->setCalorie($rcvCalorie);
     $caloriedata->setQuantity($rcvQuantity);
-    $caloriedata->setMomen($rcvMomentum);
-    $caloriedata->setPicdata($tgtfilename);
+    // $caloriedata->setPicdata($tgtfilename);
 
     $caloriedata->save();
 
@@ -135,7 +133,7 @@ if(!empty($_POST['category']))
                         <div class="err_text" id="err_calorie"></div>
                     </div>
                 </div>
-                <div class="form-group row">
+                <!-- <div class="form-group row">
                     <label for="addImage" class="col-sm-3 col-form-label">画像</label>
                     <div class="col-sm-9">
                         <div class="custom-file">
@@ -143,7 +141,7 @@ if(!empty($_POST['category']))
                             <label class="custom-file-label" for="addImage">ファイル選択...</label>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="mb-5 d-flex justify-content-center align-items-center">
                     <input type="submit" class="btn btn-primary" value="新規登録" id="buttonNew"></input>
                 </div>
