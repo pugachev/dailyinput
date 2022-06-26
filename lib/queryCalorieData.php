@@ -115,28 +115,90 @@ class QueryCalorieData extends connect
             return "DB:Error";
         }
 
-        // print_r($pager);
-        // die();
+        return $pager;
+    }
+
+    /**
+     * 指定条件でデータを検索する
+     */
+    public function searchData($startdate,$enddate,$category,$item,$page = 1, $limit = 5)
+    {
+        //画面に渡すデータ連携
+        $pager = array('totalcnt' => null, 'persons' => null);
+        //ページ番号
+        $start = ($page - 1) * $limit; 
+        //総記事数
+        $totalcnt = "";
+        //一度に取得するデータ数
+        $limit=5;
+        //検索条件の元データ
+        $where = "where delflag=0";
+        //画面に返却する検索データ
+        $searchcondition="";
+        try
+        {
+
+            //画面から取得した検索条件を組み立てる
+            //日付条件
+            if(!empty($startdate) && !empty($enddate))
+            {
+                $where .= " and tgtdate between '".$startdate."' and '".$enddate."'";
+                $searchcondition.='startdate='.$startdate.',enddate='.$enddate;
+            }
+            else if(!empty($startdate) && empty($enddate))
+            {
+                $where .= " and tgtdate >= '".$startdate."'";
+                $searchcondition.='startdate='.$startdate;
+            }
+            else if(empty($startdate) && !empty($enddate))
+            {
+                $where .= " and tgtdate <= '".$enddate."'";
+                $searchcondition.='enddate='.$enddate;
+            }
+
+            //分類
+            if(!empty($category) && $category!='firstchoice')
+            {
+                $where .= " and category ='".$category."'";
+                $searchcondition.=',category='.$category;
+            }
+
+            //項目
+            if(!empty($item) && ($item!='0000'))
+            {
+                $where .= " and item ='".$item."'";
+                $searchcondition.=',item='.$item;
+            }
+
+            //上記で作成したWhere句で総記事数を取得する
+            $sqlcnt = "SELECT COUNT(*) as totalcnt FROM dailycalorie ";
+            $sqlcnt .= $where;
+            $stmt = $this->dbh->query($sqlcnt);
+            
+            $totalcnt= $stmt->fetch(PDO::FETCH_COLUMN);
+
+            //上記で作成したWhere句でデータを取得する
+            $sqldate = "SELECT  dc.id as id ,dc.tgtdate as tgtdate, dc.category as category,im.itemname as itemname, dc.calorie as calorie,dc.quantity as quantity FROM dailycalorie as dc left join items as im on dc.item = im.item ";
+            $sqldate .= $where;
+            $sqldate .= " LIMIT ".$start.", 5";
+            // print_r($sqldate);
+            // die();
+            $stmt = $this->dbh->query($sqldate);
+            $data = $this->setAllData($stmt->fetchAll(PDO::FETCH_ASSOC));
+
+            //一般用トップ画面に渡すためのデータを格納する
+            $pager['totalcnt'] = $totalcnt;
+            $pager['data'] = $data;
+            $pager['searchcondition'] = $searchcondition;
+    
+        }
+        catch(Exception $ex)
+        {
+            return "DB:Error";
+        }
 
         return $pager;
     }
-    // public function getAllData()
-    // {
-
-    //     try
-    //     {
-    //         $stmt = $this->dbh->prepare("SELECT  * FROM personaldata");
-    //         $stmt->execute();
-    //         $data = $this->setAllData($stmt->fetchAll(PDO::FETCH_ASSOC));
-    
-    //     }
-    //     catch(Exception $ex)
-    //     {
-    //         return "DB:Error";
-    //     }
-
-    //     return $data;
-    // }
 
     /**
      * 指定したIDのデータを取得する
@@ -150,27 +212,6 @@ class QueryCalorieData extends connect
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
             $datum = $this->setDatum($stmt->fetch(PDO::FETCH_ASSOC));
-
-        }
-        catch(Exception $ex)
-        {
-            return "DB:Error";
-        }
-
-        return $datum;
-    }
-
-    /**
-     * 名前からデータが存在するかを調べる
-     */
-    public function getDatumByName($tgtname)
-    {
-        try
-        {
-            $stmt = $this->dbh->prepare("SELECT  * FROM personaldata WHERE womanname=:womanname");
-            $stmt->bindParam(':womanname', $tgtname, PDO::PARAM_STR);
-            $stmt->execute();
-            $datum = $this->setDatumByName($stmt->fetchAll(PDO::FETCH_ASSOC));
 
         }
         catch(Exception $ex)
@@ -218,22 +259,4 @@ class QueryCalorieData extends connect
         return $cd;
     }
 
-    /**
-     * 引数の名前が存在するかをチェックする
-     * 有り:true 無し:false
-     */
-    public function setDatumByName($result)
-    {
-        //データが存在しない
-        if(empty($result))
-        {
-            return false;
-        }
-        //データが存在する
-        else
-        {
-            return true;
-        }
-
-    }
 }

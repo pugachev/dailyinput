@@ -9,19 +9,82 @@
     header('Cache-Control:pre-check=0,post-check=0',false);
     header('Pragma:no-cache');
 
-    $preday="";
-    $tgtday="";
-    $nextdate="";
-    //指定日の全データを取得する
-    $querySpendingData = new QueryCalorieData();
-    $results=$querySpendingData->getAllData($tgtday);
+    $limit=5;
+    $currentpage ="1";
 
-    //設定値(最高出費額　)を取得する
-    $querySettingData = new QuerySettingData();
-    $maxcalorie=$querySettingData->getSettingCalorieData();
+    $tgtstartdate="";
+    $tgtenddate="";
+    $category="";
+    $item="";
 
-    //目標上限値 - 実際出費額 = 差分出費
-    $diffCalorie = intval($maxcalorie) - intval($results['sumcalorie']);
+    if(!empty($_GET['page']))
+    {
+        $currentpage=$_GET['page'];
+    }
+
+    if(!empty($_POST["tgtstartdate"]) || !empty($_POST["tgtenddate"]) || !empty($_POST["category"]) || !empty($_POST["item"]))
+    {
+        //指定データで検索を実行する
+        $queryCalorieData = new QueryCalorieData();
+        $results=$queryCalorieData->searchData($_POST["tgtstartdate"],$_POST["tgtenddate"],$_POST["category"],$_POST["item"]);
+        $searchconditions = explode(",",$results["searchcondition"]);
+
+        $tgtlink=[];
+        for($j=0;$j<($results['totalcnt']/$limit);$j++)
+        {
+            $tgtlink[$j]="caloriesearch.php?page=".($j+1);
+            for($i=0;$i<count($searchconditions);$i++)
+            {
+                if(!empty($searchconditions[$i]))
+                {
+                    $tgtlink[$j].= "&".$searchconditions[$i];
+                }
+            }
+        }
+    }
+
+    if(!empty($_GET["startdate"]) || !empty($_GET["enddate"]) || !empty($_GET["category"]) || !empty($_GET["item"]))
+    {
+        if(!empty($_GET["startdate"]))
+        {
+            $tgtstartdate=$_GET["startdate"];
+        }
+
+        if(!empty($_GET["enddate"]))
+        {
+            $tgtenddate=$_GET["enddate"];
+        }
+
+        if(!empty($_GET["category"]))
+        {
+            $category=$_GET["category"];
+        }
+
+        if(!empty($_GET["item"]))
+        {
+            $item=$_GET["item"];
+        }
+
+
+        //指定データで検索を実行する
+        $queryCalorieData = new QueryCalorieData();
+        $results=$queryCalorieData->searchData($tgtstartdate,$tgtenddate,$category,$item,$currentpage);
+        $searchconditions = explode(",",$results["searchcondition"]);
+
+        $tgtlink=[];
+        for($j=0;$j<($results['totalcnt']/$limit);$j++)
+        {
+            $tgtlink[$j]="caloriesearch.php?page=".($j+1);
+            for($i=0;$i<count($searchconditions);$i++)
+            {
+                if(!empty($searchconditions[$i]))
+                {
+                    $tgtlink[$j].= "&".$searchconditions[$i];
+                }
+            }
+        }
+    }
+
 
 
 
@@ -59,11 +122,11 @@
                     <div class="form-group row ">
                         <label for="tgtdate" class="col-sm-3 col-lg-1 col-form-label">開始</label>
                         <div class="col-sm-9 col-lg-5">
-                            <input type="date" class="form-control" id="tgtdate" name="tgtdate">
+                            <input type="date" class="form-control" id="tgtdate" name="tgtstartdate">
                         </div>
                         <label for="tgtdate" class="col-sm-3 col-lg-1 col-form-label">終了</label>
                         <div class="col-sm-9 col-lg-5">
-                            <input type="date" class="form-control" id="tgtdate" name="tgtdate">
+                            <input type="date" class="form-control" id="tgtdate" name="tgtenddate">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -146,20 +209,21 @@
                         print  '<div id="alert">データは存在しません！</div>'; 
                     }
                     ?>
-                    <?php if(!empty($results["totalcnt"]) && intval($results["totalcnt"])>8)
+                    <?php if(!empty($results["totalcnt"]) && intval($results["totalcnt"])>5)
                     { 
                         print '<nav class="mt-1 mb-4">';
                         print '<ul class="pagination d-flex justify-content-center">';
-                        for ($i = 1; $i <= ceil(intval($results["totalcnt"]) / $limit); $i++)
+                        // for ($i = 1; $i <= ceil(intval($results["totalcnt"]) / $limit); $i++)
+                        for ($i = 0; $i <count($tgtlink); $i++)
                         {
-                            if($i==$currentpage)
+                            if(($i+1)==$currentpage)
                             {
-                                print '<li class="page-item active"><a class="page-link" href="spendinglist.php?page='.$i.'">'.$i.'</a></li>';
+                                print '<li class="page-item active"><a class="page-link" href='.$tgtlink[$i].'>'.($i+1).'</a></li>';
                             }
                             else
                             {
 
-                                print '<li class="page-item"><a class="page-link" href="spendinglist.php?page='.$i.'">'.$i.'</a></li>';
+                                print '<li class="page-item"><a class="page-link" href='.$tgtlink[$i].'>'.($i+1).'</a></li>';
                             }
                         }
                         print '</ul>';
