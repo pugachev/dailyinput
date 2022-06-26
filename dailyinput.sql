@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.1.3
 -- https://www.phpmyadmin.net/
 --
 -- ホスト: localhost
--- 生成日時: 2022 年 6 月 20 日 00:54
+-- 生成日時: 2022 年 6 月 26 日 07:06
 -- サーバのバージョン： 10.4.21-MariaDB
 -- PHP のバージョン: 7.4.29
 
@@ -29,10 +29,10 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `dailycalorie` (
   `id` int(3) UNSIGNED NOT NULL,
+  `tgtdate` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '対象日',
   `category` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `item` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `quantity` int(3) NOT NULL DEFAULT 0,
-  `momentum` int(3) NOT NULL DEFAULT 0,
   `calorie` int(4) DEFAULT NULL,
   `picdata` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `delflag` int(1) DEFAULT NULL,
@@ -44,9 +44,10 @@ CREATE TABLE `dailycalorie` (
 -- テーブルのデータのダンプ `dailycalorie`
 --
 
-INSERT INTO `dailycalorie` (`id`, `category`, `item`, `quantity`, `momentum`, `calorie`, `picdata`, `delflag`, `created_at`, `updated_at`) VALUES
-(1, 'foods', '1002', 2, 540, 1000, '', 0, '2022-06-05 13:16:46', '2022-06-05 13:16:46'),
-(2, 'foods', '1002', 1, 540, 1000, '', 0, '2022-06-05 13:17:16', '2022-06-05 13:17:16');
+INSERT INTO `dailycalorie` (`id`, `tgtdate`, `category`, `item`, `quantity`, `calorie`, `picdata`, `delflag`, `created_at`, `updated_at`) VALUES
+(1, '', 'foods', '1002', 2, 1000, '', 0, '2022-06-05 13:16:46', '2022-06-05 13:16:46'),
+(2, '', 'foods', '1002', 1, 1000, '', 0, '2022-06-05 13:17:16', '2022-06-05 13:17:16'),
+(3, '2022-06-26', 'foods', '1014', 1, 170, NULL, 0, '2022-06-26 02:25:24', '2022-06-26 02:25:24');
 
 -- --------------------------------------------------------
 
@@ -126,7 +127,8 @@ INSERT INTO `items` (`id`, `item`, `itemname`) VALUES
 (32, 6001, '中華'),
 (33, 6002, 'ファストーフード'),
 (34, 6003, '洋食'),
-(35, 6004, '和食');
+(35, 6004, '和食'),
+(36, 1014, 'パン');
 
 -- --------------------------------------------------------
 
@@ -222,7 +224,7 @@ ALTER TABLE `stock`
 -- テーブルの AUTO_INCREMENT `dailycalorie`
 --
 ALTER TABLE `dailycalorie`
-  MODIFY `id` int(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- テーブルの AUTO_INCREMENT `dailyspending`
@@ -234,7 +236,7 @@ ALTER TABLE `dailyspending`
 -- テーブルの AUTO_INCREMENT `items`
 --
 ALTER TABLE `items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- テーブルの AUTO_INCREMENT `settings`

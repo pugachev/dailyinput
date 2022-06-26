@@ -146,10 +146,10 @@ class QueryCalorieData extends connect
 
         try
         {
-            $stmt = $this->dbh->prepare("SELECT  * FROM personaldata WHERE id=:id");
+            $stmt = $this->dbh->prepare("SELECT  * FROM dailycalorie WHERE id=:id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
-            $datum = $this->setDatum($stmt->fetchAll(PDO::FETCH_ASSOC));
+            $datum = $this->setDatum($stmt->fetch(PDO::FETCH_ASSOC));
 
         }
         catch(Exception $ex)
@@ -207,21 +207,15 @@ class QueryCalorieData extends connect
      */
     public function setDatum($result)
     {
-        $pd = new PersonalData();
-        $pd->setId($result[0]["id"]);
-        $pd->setName($result[0]["womanname"]);
-        $pd->setAge($result[0]["age"]);
-        $pd->setCategory($result[0]["category"]);
-        $pd->setBirthday($result[0]["birthday"]);
-        $pd->setBirthplace($result[0]["birthplace"]);
-        $pd->setBloodtype($result[0]["bloodtype"]);
-        $pd->setHeight($result[0]["height"]);
-        $pd->setNotices($result[0]["notices"]);
-        // $pd->setPicdata0($result[0]["picdata0"]);
-        // $pd->setPicdata1($result[0]["picdata1"]);
-        // $pd->setPicdata2($result[0]["picdata2"]);
+        $cd = new CalorieData();
+        $cd->setId($result["id"]);
+        $cd->setTgtDate($result["tgtdate"]);
+        $cd->setCategory($result["category"]);
+        $cd->setItem($result["item"]);
+        $cd->setQuantity($result["quantity"]);
+        $cd->setCalorie($result["calorie"]);
 
-        return $pd;
+        return $cd;
     }
 
     /**

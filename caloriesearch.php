@@ -12,35 +12,6 @@
     $preday="";
     $tgtday="";
     $nextdate="";
-
-    if(!empty($_GET['preday']))
-    {
-        //パラメータより本日の日付を取得する
-        $tgtday = $_GET['preday'];
-        //システムより前日の日付を取得する
-        $preday = date("Y-m-d",strtotime($tgtday."-1 day"));
-        //システムより翌日の日付を取得する
-        $nextdate = date("Y-m-d",strtotime($tgtday."+1 day"));
-    }
-    else if(!empty($_GET['nextdate']))
-    {
-        //パラメータより本日の日付を取得する
-        $tgtday = $_GET['nextdate'];
-        //システムより前日の日付を取得する
-        $preday = date("Y-m-d",strtotime($tgtday."-1 day"));
-        //システムより翌日の日付を取得する
-        $nextdate = date("Y-m-d",strtotime($tgtday."+1 day"));
-    }
-    else
-    {
-        //システムより前日の日付を取得する
-        $preday = date("Y-m-d",strtotime('-1 day'));
-        //システムより本日の日付を取得する
-        $tgtday = date("Y-m-d");
-        //システムより翌日の日付を取得する
-        $nextdate  = date("Y-m-d",strtotime('+1 day'));
-    }
-
     //指定日の全データを取得する
     $querySpendingData = new QueryCalorieData();
     $results=$querySpendingData->getAllData($tgtday);
@@ -83,17 +54,59 @@
     <?php include 'calorieheader.php';?>
     <div class="container mb-3">
         <main>
-            <div class="container-fluid mt-3">
-                    <div class="row">
-                        <div class="h5 col-md-4 result"><p class="text-center"><a href="calorielist.php?preday=<?php echo $preday; ?>" class="btn btn-primary btn-xs">前日</a></p></div>
-                        <div class="h5 col-md-4 result"><p class="text-center"><?php echo $tgtday; ?></p></div>
-                        <div class="h5 col-md-4 result"><p class="text-center"><a href="calorielist.php?nextdate=<?php echo $nextdate; ?>"  class="btn btn-primary btn-xs">翌日</a></p></div>
+            <div class="container">
+                <form class="mt-4 pb-3" action="caloriesearch.php" method="post" id="searchForm">
+                    <div class="form-group row ">
+                        <label for="tgtdate" class="col-sm-3 col-lg-1 col-form-label">開始</label>
+                        <div class="col-sm-9 col-lg-5">
+                            <input type="date" class="form-control" id="tgtdate" name="tgtdate">
+                        </div>
+                        <label for="tgtdate" class="col-sm-3 col-lg-1 col-form-label">終了</label>
+                        <div class="col-sm-9 col-lg-5">
+                            <input type="date" class="form-control" id="tgtdate" name="tgtdate">
+                        </div>
                     </div>
-                    <div class="row">
-                        <div class="h4 col-md-4 result"><p class="text-center">目標上限:<?php echo $maxcalorie; ?></p></div>
-                        <div class="h4 col-md-4 result"><p class="text-center">現在出費:<?php echo $results['sumcalorie']; ?></p></div>
-                        <div class="h4 col-md-4 result"><p class="text-center">差分出費:<?php echo $diffCalorie; ?></p></div>
+                    <div class="form-group row">
+                        <label for="category" class="col-sm-3 col-form-label col-lg-1">分類</label>
+                        <div class="col-sm-9 col-lg-11">
+                            <select class="form-control" name="category" id="category">
+                                <option value="firstchoice" selected>選択して下さい</option>
+                                <option value="foods">食材</option>
+                                <option value="eatingout">外食</option>
+                            </select>
+                        </div>
                     </div>
+                    <div class="form-group row">
+                        <label for="item" class="col-sm-3 col-form-label col-lg-1">項目</label>
+                        <div class="col-sm-9 col-lg-11">
+                            <select class="form-control" name="item" id="item">
+                                <option value="0000" selected>選択して下さい</option>
+                                <option value="1001" class="foods">カレー</option>
+                                <option value="1002" class="foods">ラーメン</option>
+                                <option value="1003" class="foods">うどん</option>
+                                <option value="1004" class="foods">蕎麦</option>
+                                <option value="1005" class="foods">中華そば</option>
+                                <option value="1006" class="foods">チキン</option>
+                                <option value="1007" class="foods">コロッケ</option>
+                                <option value="1008" class="foods">野菜</option>
+                                <option value="1009" class="foods">お肉</option>
+                                <option value="1010" class="foods">ハンバーグ</option>
+                                <option value="1011" class="foods">アルコール</option>  
+                                <option value="1012" class="foods">お菓子</option>  
+                                <option value="1013" class="foods">おにぎり</option>  
+                                <option value="1014" class="foods">パン</option>  
+                                <option value="6001" class="eatingout">中華</option>
+                                <option value="6002" class="eatingout">ファストーフード</option>
+                                <option value="6003" class="eatingout">洋食</option>
+                                <option value="6004" class="eatingout">和食</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-5 d-flex justify-content-center align-items-center">
+                        <input type="submit" class="btn btn-primary" value="検索" id="buttonNew"></input>
+                    </div>
+                </form>
+
                     <?php if(!empty($results["data"]))
                     { 
                         print '<div class="table-responsive-md">';
