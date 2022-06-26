@@ -45,9 +45,9 @@
     $querySpendingData = new QuerySpendingData();
     $results=$querySpendingData->getAllData($tgtday);
 
-    //設定値を取得する
+    //設定値(最高出費額　)を取得する
     $querySettingData = new QuerySettingData();
-    $maxspending=$querySettingData->getSettingData();
+    $maxspending=$querySettingData->getSettingSpendingData();
 
     //目標上限値 - 実際出費額 = 差分出費
     $diffSpending = intval($maxspending) - intval($results['sumprice']);
@@ -79,7 +79,7 @@
             } */
         }
     </style>
-    <title>Calorie</title>
+    <title>出費</title>
 </head>
 
 <body style=" padding-top: 50px;">
