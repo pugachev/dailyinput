@@ -1,5 +1,5 @@
 <?php
-include __DIR__.'/stockdata.php';
+include __DIR__.'/stockData.php';
 
 class QueryStockData extends connect
 {
