@@ -1,6 +1,6 @@
 <?php
     include 'lib/connect.php';
-    include 'lib/queryCalorieData.php';
+    include 'lib/querySpendingData.php';
     include 'lib/querySettingData.php';
 
     header('Expires: Tue, 1 Jan 2019 00:00:00 GMT');
@@ -25,7 +25,7 @@
     if(!empty($_POST["tgtstartdate"]) || !empty($_POST["tgtenddate"]) || !empty($_POST["category"]) || !empty($_POST["item"]))
     {
         //指定データで検索を実行する
-        $queryCalorieData = new QueryCalorieData();
+        $queryCalorieData = new QuerySpendingData();
         $results=$queryCalorieData->searchData($_POST["tgtstartdate"],$_POST["tgtenddate"],$_POST["category"],$_POST["item"]);
         $searchconditions = explode(",",$results["searchcondition"]);
 
@@ -67,7 +67,7 @@
 
 
         //指定データで検索を実行する
-        $queryCalorieData = new QueryCalorieData();
+        $queryCalorieData = new QuerySpendingData();
         $results=$queryCalorieData->searchData($tgtstartdate,$tgtenddate,$category,$item,$currentpage);
         $searchconditions = explode(",",$results["searchcondition"]);
 
@@ -84,12 +84,6 @@
             }
         }
     }
-
-
-
-
-
-
 ?>
 <!doctype html>
 <html lang="ja">
@@ -110,15 +104,15 @@
             } */
         }
     </style>
-    <title>熱量検索</title>
+    <title>出費検索</title>
 </head>
 
 <body style=" padding-top: 50px;">
-    <?php include 'calorieheader.php';?>
+    <?php include 'spendingheader.php';?>
     <div class="container mb-3">
         <main>
             <div class="container">
-                <form class="mt-4 pb-3" action="caloriesearch.php" method="post" id="searchForm">
+                <form class="mt-4 pb-3" action="spendingsearch.php" method="post" id="searchForm">
                     <div class="form-group row ">
                         <label for="tgtdate" class="col-sm-3 col-lg-1 col-form-label">開始</label>
                         <div class="col-sm-9 col-lg-5">
@@ -143,25 +137,43 @@
                         <label for="item" class="col-sm-3 col-form-label col-lg-1">項目</label>
                         <div class="col-sm-9 col-lg-11">
                             <select class="form-control" name="item" id="item">
-                                <option value="0000" selected>選択して下さい</option>
-                                <option value="1001" class="foods">カレー</option>
-                                <option value="1002" class="foods">ラーメン</option>
-                                <option value="1003" class="foods">うどん</option>
-                                <option value="1004" class="foods">蕎麦</option>
-                                <option value="1005" class="foods">中華そば</option>
-                                <option value="1006" class="foods">チキン</option>
-                                <option value="1007" class="foods">コロッケ</option>
-                                <option value="1008" class="foods">野菜</option>
-                                <option value="1009" class="foods">お肉</option>
-                                <option value="1010" class="foods">ハンバーグ</option>
-                                <option value="1011" class="foods">アルコール</option>  
-                                <option value="1012" class="foods">お菓子</option>  
-                                <option value="1013" class="foods">おにぎり</option>  
-                                <option value="1014" class="foods">パン</option>  
-                                <option value="6001" class="eatingout">中華</option>
-                                <option value="6002" class="eatingout">ファストーフード</option>
-                                <option value="6003" class="eatingout">洋食</option>
-                                <option value="6004" class="eatingout">和食</option>
+                            <option value="0000" selected>選択して下さい</option>
+                            <option value="1001" class="foods">カレー</option>
+                            <option value="1002" class="foods">ラーメン</option>
+                            <option value="1003" class="foods">うどん</option>
+                            <option value="1004" class="foods">蕎麦</option>
+                            <option value="1005" class="foods">中華そば</option>
+                            <option value="1006" class="foods">チキン</option>
+                            <option value="1007" class="foods">コロッケ</option>
+                            <option value="1008" class="foods">野菜</option>
+                            <option value="1009" class="foods">お肉</option>
+                            <option value="1010" class="foods">ハンバーグ</option>
+                            <option value="1011" class="foods">アルコール</option>  
+                            <option value="1012" class="foods">お菓子</option>
+                            <option value="1013" class="foods">おにぎり</option> 
+                            <option value="1014" class="foods">パン</option>  
+                            <option value="2001" class="necessities">トイレ用品</option>
+                            <option value="2002" class="necessities">お風呂用品</option>
+                            <option value="2003" class="necessities">台所用品</option>
+                            <option value="2004" class="necessities">洗濯用品</option>
+                            <option value="2005" class="necessities">掃除用品</option>
+                            <option value="3001" class="amazon">PC用品</option>
+                            <option value="3002" class="amazon">Kindle本</option>
+                            <option value="3003" class="amazon">サプリメント</option>
+                            <option value="3004" class="amazon">アロマ用品</option>
+                            <option value="3005" class="amazon">仏具用品</option>
+                            <option value="4001" class="publiccharge">水道代</option>
+                            <option value="4002" class="publiccharge">ガス代</option>
+                            <option value="4003" class="publiccharge">光熱費</option>
+                            <option value="4004" class="publiccharge">NHK</option>
+                            <option value="5001" class="medical">歯医者</option>
+                            <option value="5002" class="medical">内科</option>
+                            <option value="5003" class="medical">外科</option>
+                            <option value="5004" class="medical">検査</option>
+                            <option value="6001" class="outeat">中華</option>
+                            <option value="6002" class="outeat">ファストーフード</option>
+                            <option value="6003" class="outeat">洋食</option>
+                            <option value="6004" class="outeat">和食</option>
                             </select>
                         </div>
                     </div>
@@ -179,7 +191,7 @@
                         print '<th>#</th>';
                         print '<th>分類</th>';
                         print '<th>項目</th>';
-                        print '<th>熱量</th>';
+                        print '<th>価格</th>';
                         print '<th>数量</th>';
                         print '<th>編集</th>';
                         print '<th>削除</th>';
@@ -192,7 +204,7 @@
                             print '<th>'.( intval($key)+1).'</th>';
                             print '<td>'.$data->getCategory().'</td>';
                             print '<td>'.$data->getItem().'</td>';
-                            print '<td>'.$data->getCalorie().'</td>';
+                            print '<td>'.$data->getPrice().'</td>';
                             print '<td>'.$data->getQuantity().'</td>';
                             print '<td><a href="calorieedit.php?id='.$data->getId().'" class="btn btn-primary btn-xs">編集</a></td>';
                             print '<td><a href="calorieedit.php" class="btn btn-primary btn-xs">削除</a></td>';

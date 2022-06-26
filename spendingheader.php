@@ -14,6 +14,9 @@
                     <a class="nav-link" href="spendingnew.php">新規作成</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="spendingsearch.php">検索</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="calorielist.php">熱量一覧</a>
                 </li>
             </ul>
