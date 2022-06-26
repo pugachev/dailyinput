@@ -157,7 +157,7 @@
                                     <td class="today">
                                         <?php echo $td ?>
                                         <?php echo "<br />" ?>
-                                        <?php echo '<font size=3><a href="calorieList.php">' ?>
+                                        <?php echo '<font size=3><a href="calorielist.php">' ?>
                                         <?php echo '1650kcal' ?>
                                         <?php echo '</a></font>' ?>
                                         <?php echo " " ?>

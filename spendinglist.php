@@ -122,7 +122,7 @@
                             print '<td>'.$data->getPrice().'</td>';
                             print '<td>'.$data->getQuantity().'</td>';
                             print '<td><a href="spendingedit.php?id='.$data->getId().'" class="btn btn-primary btn-xs">編集</a></td>';
-                            print '<td><a href="spendingedit.php" class="btn btn-primary btn-xs">編集</a></td>';
+                            print '<td><a href="spendingedit.php" class="btn btn-primary btn-xs">削除</a></td>';
                             print '</tr>';
                         }
                         print '</tbody>';

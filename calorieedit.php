@@ -9,38 +9,36 @@ header('Cache-Control:no-cache,no-store,must-revalidate,max-age=0');
 header('Cache-Control:pre-check=0,post-check=0',false);
 header('Pragma:no-cache');
 
-if(!empty($_POST['category']))
+$queryCalorieData = new QueryCalorieData();
+if(!empty($_GET['id']))
 {
-    //入力画面から取得した項目
-    $rcvCategory = $_POST['category'];
-    $rcvItem = $_POST['item'];
-    $rcvQuantity = $_POST['quantity'];
-    $rcvCalorie = $_POST['calorie'];
-    $tgtfilename="";
-    // if (!empty($_FILES['picdata']['name'])) 
-    // {
-    //     $tgtfilename = date("YmdHis");
-    //     $tgtfilename .= '.' . substr(strrchr($_FILES['picdata']['name'], '.'), 1);//アップロードされたファイルの拡張子を取得
-    //     $file = "upload/$tgtfilename";
+    //一覧画面から取得した日付
+    
+    $result = $queryCalorieData->getDatum($_GET['id']);
+}
 
-    //     move_uploaded_file($_FILES['picdata']['tmp_name'], 'upload/' . $tgtfilename);//imagesディレクトリにファイル保存
-    //     if (exif_imagetype($file)) {
-    //         //画像ファイルかのチェック
-    //     } else {
-    //         // $message = '画像ファイルではありません';
-    //     }
-    // }
+if(!empty($_POST['id']))
+{
+    $id = $_POST['id'];
+    $tgtdate = $_POST['tgtdate'];
+    $tgtcategory = $_POST['category'];
+    $tgtitem = $_POST['item'];
+    $tgtprice = $_POST['calorie'];
+    $tgtquantity = $_POST['quantity'];
 
     $caloriedata = new CalorieData();
-    $caloriedata->setCategory($rcvCategory);
-    $caloriedata->setItem($rcvItem);
-    $caloriedata->setCalorie($rcvCalorie);
-    $caloriedata->setQuantity($rcvQuantity);
-    // $caloriedata->setPicdata($tgtfilename);
+    $caloriedata->setId($id);
+    $caloriedata->setTxtDate($tgtdate);
+    $caloriedata->setCategory($tgtcategory);
+    $caloriedata->setItem($tgtitem);
+    $caloriedata->setCalorie($tgtprice);
+    $caloriedata->setQuantity($tgtquantity);
 
     $caloriedata->save();
 
-    
+    $tgturl = 'Location: https://ikefukuro40.tech/dailyinput/calorieedit.php?id='.$id;
+
+    header($tgturl);
 }
 
 
@@ -82,7 +80,7 @@ if(!empty($_POST['category']))
                 <div class="form-group row">
                     <label for="calorie_date" class="col-sm-3 col-form-label">カロリー/日</label>
                     <div class="col-sm-9">
-                    <input type="date" class="form-control" id="tgtdate">
+                    <input type="date" class="form-control" id="tgtdate" name="tgtdate" value="<?php echo $result->getTgtDate(); ?>">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -90,8 +88,8 @@ if(!empty($_POST['category']))
                     <div class="col-sm-9">
                         <select class="form-control" name="category" id="category">
                             <option value="firstchoice" selected>選択して下さい</option>
-                            <option value="foods">食材</option>
-                            <option value="eatingout">外食</option>
+                            <option value="foods" <?php if($result->getCategory()=='foods') echo 'selected'; ?>>食材</option>
+                            <option value="eatingout" <?php if($result->getCategory()=='eatingout') echo 'selected'; ?>>外食</option>
                         </select>
                     </div>
                 </div>
@@ -100,36 +98,38 @@ if(!empty($_POST['category']))
                     <div class="col-sm-9">
                         <select class="form-control" name="item" id="item">
                             <option value="0000" selected>選択して下さい</option>
-                            <option value="1001" class="foods">カレー</option>
-                            <option value="1002" class="foods">ラーメン</option>
-                            <option value="1003" class="foods">うどん</option>
-                            <option value="1004" class="foods">蕎麦</option>
-                            <option value="1005" class="foods">中華そば</option>
-                            <option value="1006" class="foods">チキン</option>
-                            <option value="1007" class="foods">コロッケ</option>
-                            <option value="1008" class="foods">野菜</option>
-                            <option value="1009" class="foods">お肉</option>
-                            <option value="1010" class="foods">ハンバーグ</option>
-                            <option value="1011" class="foods">アルコール</option>  
-                            <option value="1012" class="foods">お菓子</option>  
-                            <option value="6001" class="medical">中華</option>
-                            <option value="6002" class="medical">ファストーフード</option>
-                            <option value="6003" class="medical">洋食</option>
-                            <option value="6004" class="medical">和食</option>
+                            <option value="1001" class="foods" <?php if($result->getItem()=='1001') echo 'selected'; ?>>カレー</option>
+                            <option value="1002" class="foods" <?php if($result->getItem()=='1002') echo 'selected'; ?>>ラーメン</option>
+                            <option value="1003" class="foods" <?php if($result->getItem()=='1003') echo 'selected'; ?>>うどん</option>
+                            <option value="1004" class="foods" <?php if($result->getItem()=='1004') echo 'selected'; ?>>蕎麦</option>
+                            <option value="1005" class="foods" <?php if($result->getItem()=='1005') echo 'selected'; ?>>中華そば</option>
+                            <option value="1006" class="foods" <?php if($result->getItem()=='1006') echo 'selected'; ?>>チキン</option>
+                            <option value="1007" class="foods" <?php if($result->getItem()=='1007') echo 'selected'; ?>>コロッケ</option>
+                            <option value="1008" class="foods" <?php if($result->getItem()=='1008') echo 'selected'; ?>>野菜</option>
+                            <option value="1009" class="foods" <?php if($result->getItem()=='1009') echo 'selected'; ?>>お肉</option>
+                            <option value="1010" class="foods" <?php if($result->getItem()=='1010') echo 'selected'; ?>>ハンバーグ</option>
+                            <option value="1011" class="foods" <?php if($result->getItem()=='1011') echo 'selected'; ?>>アルコール</option>  
+                            <option value="1012" class="foods" <?php if($result->getItem()=='1012') echo 'selected'; ?>>お菓子</option> 
+                            <option value="1013" class="foods" <?php if($result->getItem()=='1013') echo 'selected'; ?>>おにぎり</option>   
+                            <option value="1014" class="foods" <?php if($result->getItem()=='1014') echo 'selected'; ?>>パン</option>        
+                            <option value="6001" class="outeat" <?php if($result->getItem()=='6001') echo 'selected'; ?>>中華</option>
+                            <option value="6002" class="outeat" <?php if($result->getItem()=='6002') echo 'selected'; ?>>ファストーフード</option>
+                            <option value="6003" class="outeat" <?php if($result->getItem()=='6003') echo 'selected'; ?>>洋食</option>
+                            <option value="6004" class="outeat" <?php if($result->getItem()=='6004') echo 'selected'; ?>>和食</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="quantity" class="col-sm-3 col-form-label">個数</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="quantity" placeholder="個数" value="" name="quantity">
+                        <input type="text" class="form-control" id="quantity" placeholder="個数" value="<?php echo $result->getQuantity(); ?>" name="quantity">
                         <div class="err_text" id="err_quantity"></div>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="calorie" class="col-sm-3 col-form-label">熱量</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="calorie" placeholder="カロリー" value="" name="calorie">
+                        <input type="text" class="form-control" id="calorie" placeholder="カロリー" value="<?php echo $result->getCalorie(); ?>" name="calorie">
                         <div class="err_text" id="err_calorie"></div>
                     </div>
                 </div>
@@ -145,6 +145,8 @@ if(!empty($_POST['category']))
                 <div class="mb-5 d-flex justify-content-center align-items-center">
                     <input type="submit" class="btn btn-primary" value="新規登録" id="buttonNew"></input>
                 </div>
+
+                <input type="hidden" value="<?php echo $result->getId(); ?>" name="id">
             </form>
         </div>
     </main>

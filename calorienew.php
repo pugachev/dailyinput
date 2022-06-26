@@ -115,6 +115,7 @@ if(!empty($_POST['tgtdate']))
                             <option value="1011" class="foods">アルコール</option>  
                             <option value="1012" class="foods">お菓子</option>  
                             <option value="1013" class="foods">おにぎり</option>  
+                            <option value="1014" class="foods">パン</option>  
                             <option value="6001" class="eatingout">中華</option>
                             <option value="6002" class="eatingout">ファストーフード</option>
                             <option value="6003" class="eatingout">洋食</option>

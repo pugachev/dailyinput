@@ -104,7 +104,8 @@ if(!empty($_POST['category']))
                             <option value="1010" class="foods">ハンバーグ</option>
                             <option value="1011" class="foods">アルコール</option>  
                             <option value="1012" class="foods">お菓子</option>
-                            <option value="1013" class="foods">おにぎり</option>     
+                            <option value="1013" class="foods">おにぎり</option> 
+                            <option value="1014" class="foods">パン</option>  
                             <option value="2001" class="necessities">トイレ用品</option>
                             <option value="2002" class="necessities">お風呂用品</option>
                             <option value="2003" class="necessities">台所用品</option>
