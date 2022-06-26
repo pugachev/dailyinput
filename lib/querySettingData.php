@@ -62,13 +62,24 @@ class QuerySettingData extends connect
         }
     }
 
-    public function getSettingData()
+    public function getSettingSpendingData()
     {
         $stmt = $this->dbh->prepare("SELECT  * FROM settings");
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $maxspending = $data[0]['maxspending'];
+
+        return $maxspending;
+    }
+
+    public function getSettingCalorieData()
+    {
+        $stmt = $this->dbh->prepare("SELECT  * FROM settings");
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $maxspending = $data[0]['maxcalorie'];
 
         return $maxspending;
     }

@@ -72,7 +72,7 @@ class QueryCalorieData extends connect
     /**
      * 全データを取得する
      */
-    public function getAllData($page = 1, $limit = 8)
+    public function getAllData($tgtdate,$page = 1, $limit = 8)
     {
         //画面に渡すデータ連携
         $pager = array('totalcnt' => null, 'persons' => null);
@@ -85,20 +85,29 @@ class QueryCalorieData extends connect
         try
         {
             //現在の総記事数を取得する
-            $stmt = $this->dbh->prepare("SELECT COUNT(*) as totalcnt FROM dailycalorie");
+            $stmt = $this->dbh->prepare("SELECT COUNT(*) as totalcnt FROM dailycalorie where tgtdate=:tgtdate");
+            $stmt->bindParam(':tgtdate', $tgtdate, PDO::PARAM_STR);
             $stmt->execute();
             $totalcnt= $stmt->fetch(PDO::FETCH_COLUMN);
 
             //現在登録している全ての個人データを取得する
-            $stmt = $this->dbh->prepare("SELECT  * FROM dailycalorie LIMIT :start, :limit");
+            $stmt = $this->dbh->prepare("SELECT  dc.id as id ,dc.tgtdate as tgtdate, dc.category as category,im.itemname as itemname, dc.calorie as calorie,dc.quantity as quantity FROM dailycalorie as dc left join items as im on dc.item = im.item where tgtdate=:tgtdate LIMIT :start, :limit");
+            $stmt->bindParam(':tgtdate', $tgtdate, PDO::PARAM_STR);
             $stmt->bindParam(':start', $start, PDO::PARAM_INT);
             $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
             $stmt->execute();
             $data = $this->setAllData($stmt->fetchAll(PDO::FETCH_ASSOC));
 
+            //対象日付の総出費額を取得する
+            $stmt = $this->dbh->prepare("SELECT sum(calorie) FROM dailycalorie  group by tgtdate having tgtdate=:tgtdate");
+            $stmt->bindParam(':tgtdate', $tgtdate, PDO::PARAM_STR);
+            $stmt->execute();
+            $sumcalorie = $stmt->fetch(PDO::FETCH_COLUMN);
+
             //一般用トップ画面に渡すためのデータを格納する
             $pager['totalcnt'] = $totalcnt;
             $pager['data'] = $data;
+            $pager['sumcalorie']=$sumcalorie;
     
         }
         catch(Exception $ex)
@@ -184,7 +193,7 @@ class QueryCalorieData extends connect
             $qd->setId($result["id"]);
             $qd->setTgtDate($result["tgtdate"]);
             $qd->setCategory($result["category"]);
-            $qd->setItem($result["item"]);
+            $qd->setItem($result["itemname"]);
             $qd->setQuantity($result["quantity"]);
             $qd->setCalorie($result["calorie"]);
 

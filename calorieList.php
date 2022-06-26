@@ -42,15 +42,15 @@
     }
 
     //指定日の全データを取得する
-    $querySpendingData = new QuerySpendingData();
+    $querySpendingData = new QueryCalorieData();
     $results=$querySpendingData->getAllData($tgtday);
 
-    //設定値を取得する
+    //設定値(最高出費額　)を取得する
     $querySettingData = new QuerySettingData();
-    $maxspending=$querySettingData->getSettingData();
+    $maxcalorie=$querySettingData->getSettingCalorieData();
 
     //目標上限値 - 実際出費額 = 差分出費
-    $diffSpending = intval($maxspending) - intval($results['sumprice']);
+    $diffCalorie = intval($maxcalorie) - intval($results['sumcalorie']);
 
 
 
@@ -76,7 +76,7 @@
             } */
         }
     </style>
-    <title>Calorie</title>
+    <title>カロリー</title>
 </head>
 
 <body style=" padding-top: 50px;">
@@ -85,123 +85,73 @@
         <main>
             <div class="container-fluid mt-3">
                     <div class="row">
-                        <div class="h5 col-md-4 result"><p class="text-center">前日</p></div>
-                        <div class="h5 col-md-4 result"><p class="text-center">2022/06/11</p></div>
-                        <div class="h5 col-md-4 result"><p class="text-center">翌日</p></div>
+                        <div class="h5 col-md-4 result"><p class="text-center"><a href="calorielist.php?preday=<?php echo $preday; ?>" class="btn btn-primary btn-xs">前日</a></p></div>
+                        <div class="h5 col-md-4 result"><p class="text-center"><?php echo $tgtday; ?></p></div>
+                        <div class="h5 col-md-4 result"><p class="text-center"><a href="calorielist.php?nextdate=<?php echo $nextdate; ?>"  class="btn btn-primary btn-xs">翌日</a></p></div>
                     </div>
                     <div class="row">
-                        <div class="h4 col-md-4 result"><p class="text-center">目標熱量:1600</p></div>
-                        <div class="h4 col-md-4 result"><p class="text-center">現在熱量:1250</p></div>
-                        <div class="h4 col-md-4 result"><p class="text-center">差分熱量:350</p></div>
+                        <div class="h4 col-md-4 result"><p class="text-center">目標上限:<?php echo $maxcalorie; ?></p></div>
+                        <div class="h4 col-md-4 result"><p class="text-center">現在出費:<?php echo $results['sumcalorie']; ?></p></div>
+                        <div class="h4 col-md-4 result"><p class="text-center">差分出費:<?php echo $diffCalorie; ?></p></div>
                     </div>
-                    <div class="table-responsive-md">
-                        <table class="table table-hover table-striped text-nowrap">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>分類</th>
-                                    <th>項目</th>
-                                    <th>熱量</th>
-                                    <th>画像</th>
-                                    <th>編集</th>
-                                    <th>削除</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                    <th>1</th>
-                                    <td><a href="detail.html">外食</a></td>
-                                    <td>王将セット</td>
-                                    <td>1250</td>
-                                    <td>画像</td>
-                                    <td><a href="edit.php" class="btn btn-primary btn-xs">編集</a></td>
-                                    <td><a href="" class="btn btn-primary btn-xs">削除</a></td>
-                                </tr>
+                    <?php if(!empty($results["data"]))
+                    { 
+                        print '<div class="table-responsive-md">';
+                        print '<table class="table table-hover table-striped text-nowrap">';
+                        print '<thead>';
+                        print '<tr>';
+                        print '<th>#</th>';
+                        print '<th>分類</th>';
+                        print '<th>項目</th>';
+                        print '<th>熱量</th>';
+                        print '<th>数量</th>';
+                        print '<th>編集</th>';
+                        print '<th>削除</th>';
+                        print '</tr>';
+                        print '</thead>';
+                        print '<tbody>';
+                        foreach($results["data"] as $key=>$data)
+                        {
+                            print '<tr>';
+                            print '<th>'.( intval($key)+1).'</th>';
+                            print '<td>'.$data->getCategory().'</td>';
+                            print '<td>'.$data->getItem().'</td>';
+                            print '<td>'.$data->getCalorie().'</td>';
+                            print '<td>'.$data->getQuantity().'</td>';
+                            print '<td><a href="spendingedit.php?id='.$data->getId().'" class="btn btn-primary btn-xs">編集</a></td>';
+                            print '<td><a href="spendingedit.php" class="btn btn-primary btn-xs">編集</a></td>';
+                            print '</tr>';
+                        }
+                        print '</tbody>';
+                        print '</table>';
+                        print '</div>';
+                        print '</div>';
+                        print '</div>';
+                    }
+                    else
+                    {
+                        print  '<div id="alert">データは存在しません！</div>'; 
+                    }
+                    ?>
+                    <?php if(!empty($results["totalcnt"]) && intval($results["totalcnt"])>8)
+                    { 
+                        print '<nav class="mt-1 mb-4">';
+                        print '<ul class="pagination d-flex justify-content-center">';
+                        for ($i = 1; $i <= ceil(intval($results["totalcnt"]) / $limit); $i++)
+                        {
+                            if($i==$currentpage)
+                            {
+                                print '<li class="page-item active"><a class="page-link" href="spendinglist.php?page='.$i.'">'.$i.'</a></li>';
+                            }
+                            else
+                            {
 
-                                <tr>
-                                    <th>2</th>
-                                    <td><a href="detail.html">外食</a></td>
-                                    <td>王将セット</td>
-                                    <td>1250</td>
-                                    <td>画像</td>
-                                    <td><a href="edit.php" class="btn btn-primary btn-xs">編集</a></td>
-                                    <td><a href="" class="btn btn-primary btn-xs">削除</a></td>
-                                </tr>
-                                <tr>
-                                    <th>3</th>
-                                    <td><a href="detail.html">外食</a></td>
-                                    <td>王将セット</td>
-                                    <td>1250</td>
-                                    <td>画像</td>
-                                    <td><a href="edit.php" class="btn btn-primary btn-xs">編集</a></td>
-                                    <td><a href="" class="btn btn-primary btn-xs">削除</a></td>
-                                </tr>
-                                <tr>
-                                    <th>4</th>
-                                    <td><a href="detail.html">外食</a></td>
-                                    <td>王将セット</td>
-                                    <td>1250</td>
-                                    <td>画像</td>
-                                    <td><a href="edit.php" class="btn btn-primary btn-xs">編集</a></td>
-                                    <td><a href="" class="btn btn-primary btn-xs">削除</a></td>
-                                </tr>
-                                <tr>
-                                    <th>5</th>
-                                    <td><a href="detail.html">外食</a></td>
-                                    <td>王将セット</td>
-                                    <td>1250</td>
-                                    <td>画像</td>
-                                    <td><a href="edit.php" class="btn btn-primary btn-xs">編集</a></td>
-                                    <td><a href="" class="btn btn-primary btn-xs">削除</a></td>
-                                </tr>
-                                <tr>
-                                    <th>6</th>
-                                    <td><a href="detail.html">外食</a></td>
-                                    <td>王将セット</td>
-                                    <td>1250</td>
-                                    <td>画像</td>
-                                    <td><a href="edit.php" class="btn btn-primary btn-xs">編集</a></td>
-                                    <td><a href="" class="btn btn-primary btn-xs">削除</a></td>
-                                </tr>
-                                <tr>
-                                    <th>7</th>
-                                    <td><a href="detail.html">外食</a></td>
-                                    <td>王将セット</td>
-                                    <td>1250</td>
-                                    <td>画像</td>
-                                    <td><a href="edit.php" class="btn btn-primary btn-xs">編集</a></td>
-                                    <td><a href="" class="btn btn-primary btn-xs">削除</a></td>
-                                </tr>
-                                <tr>
-                                    <th>8</th>
-                                    <td><a href="detail.html">外食</a></td>
-                                    <td>王将セット</td>
-                                    <td>1250</td>
-                                    <td>画像</td>
-                                    <td><a href="edit.php" class="btn btn-primary btn-xs">編集</a></td>
-                                    <td><a href="" class="btn btn-primary btn-xs">削除</a></td>
-                                </tr>
-                                <tr>
-                                    <th>9</th>
-                                    <td><a href="detail.html">外食</a></td>
-                                    <td>王将セット</td>
-                                    <td>1250</td>
-                                    <td>画像</td>
-                                    <td><a href="edit.php" class="btn btn-primary btn-xs">編集</a></td>
-                                    <td><a href="" class="btn btn-primary btn-xs">削除</a></td>
-                                </tr>
-                                <tr>
-                                    <th>10</th>
-                                    <td><a href="detail.html">外食</a></td>
-                                    <td>王将セット</td>
-                                    <td>1250</td>
-                                    <td>画像</td>
-                                    <td><a href="calorieedit.php" class="btn btn-primary btn-xs">編集</a></td>
-                                    <td><a href="" class="btn btn-primary btn-xs">削除</a></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                                print '<li class="page-item"><a class="page-link" href="spendinglist.php?page='.$i.'">'.$i.'</a></li>';
+                            }
+                        }
+                        print '</ul>';
+                        print '</nav>';
+                    } ?>
                 </div>
             </div>
         </main>
