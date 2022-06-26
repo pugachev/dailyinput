@@ -111,7 +111,8 @@ if(!empty($_POST['id']))
                             <option value="1011" class="foods" <?php if($result->getItem()=='1011') echo 'selected'; ?>>アルコール</option>  
                             <option value="1012" class="foods" <?php if($result->getItem()=='1012') echo 'selected'; ?>>お菓子</option> 
                             <option value="1013" class="foods" <?php if($result->getItem()=='1013') echo 'selected'; ?>>おにぎり</option>   
-                            <option value="1014" class="foods" <?php if($result->getItem()=='1014') echo 'selected'; ?>>パン</option>        
+                            <option value="1014" class="foods" <?php if($result->getItem()=='1014') echo 'selected'; ?>>パン</option>     
+                            <option value="1015" class="foods" <?php if($result->getItem()=='1015') echo 'selected'; ?>>ご飯</option>     
                             <option value="6001" class="outeat" <?php if($result->getItem()=='6001') echo 'selected'; ?>>中華</option>
                             <option value="6002" class="outeat" <?php if($result->getItem()=='6002') echo 'selected'; ?>>ファストーフード</option>
                             <option value="6003" class="outeat" <?php if($result->getItem()=='6003') echo 'selected'; ?>>洋食</option>
