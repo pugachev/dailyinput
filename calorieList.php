@@ -47,7 +47,7 @@
 
     //設定値(最高出費額　)を取得する
     $querySettingData = new QuerySettingData();
-    $maxcalorie=$querySettingData->getSettingCalorieData();
+    $maxcalorie=$querySettingData->getSettingCalorieMaxData();
 
     //目標上限値 - 実際出費額 = 差分出費
     $diffCalorie = intval($maxcalorie) - intval($results['sumcalorie']);

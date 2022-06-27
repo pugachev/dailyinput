@@ -62,25 +62,50 @@ class QuerySettingData extends connect
         }
     }
 
-    public function getSettingSpendingData()
+    // public function getSettingSpendingData()
+    // {
+    //     $stmt = $this->dbh->prepare("SELECT  * FROM settings");
+    //     $stmt->execute();
+    //     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    //     $maxspending = $data[0]['maxspending'];
+
+    //     return $maxspending;
+    // }
+
+    public function getSettingCalorieMaxData()
     {
         $stmt = $this->dbh->prepare("SELECT  * FROM settings");
         $stmt->execute();
-        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $maxspending = $data[0]['maxspending'];
-
-        return $maxspending;
+        if(!empty($data['maxcalorie']))
+        {
+            $maxcalorie= $data['maxcalorie'];
+        }
+        else
+        {
+            $maxcalorie=intval(1600);
+        }
+       
+        return $maxcalorie;
     }
 
-    public function getSettingCalorieData()
+    public function getSettingSpendingMaxData()
     {
         $stmt = $this->dbh->prepare("SELECT  * FROM settings");
         $stmt->execute();
-        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $maxspending = $data[0]['maxcalorie'];
-
+        if(!empty($data['maxspending']))
+        {
+            $maxspending = $data['maxspending'];
+        }
+        else
+        {
+            $maxspending=intval(1600);
+        }
+       
         return $maxspending;
     }
 
