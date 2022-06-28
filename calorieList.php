@@ -42,8 +42,8 @@
     }
 
     //指定日の全データを取得する
-    $querySpendingData = new QueryCalorieData();
-    $results=$querySpendingData->getAllData($tgtday);
+    $queryCalorieData = new QueryCalorieData();
+    $results=$queryCalorieData->getAllData($tgtday);
 
     //設定値(最高出費額　)を取得する
     $querySettingData = new QuerySettingData();

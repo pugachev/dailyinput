@@ -82,7 +82,7 @@ if(!empty($_POST['tgtdate']))
         <div class="container">
             <form class="mt-4 pb-3" action="calorienew.php" enctype="multipart/form-data" method="post" id="newform">
                 <div class="form-group row">
-                    <label for="tgtdate" class="col-sm-3 col-form-label">カロリー/日</label>
+                    <label for="tgtdate" class="col-sm-3 col-form-label">対象日</label>
                     <div class="col-sm-9">
                     <input type="date" class="form-control" id="tgtdate" name="tgtdate">
                     </div>
