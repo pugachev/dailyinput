@@ -47,7 +47,7 @@
 
     //設定値(最高出費額　)を取得する
     $querySettingData = new QuerySettingData();
-    $maxspending=$querySettingData->getSettingSpendingMaxData();
+    $maxspending=$querySettingData->getSettingSpendingMaxData($tgtday);
 
     //目標上限値 - 実際出費額 = 差分出費
     $diffSpending = intval($maxspending) - intval($results['sumprice']);
