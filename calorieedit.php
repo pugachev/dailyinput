@@ -13,7 +13,6 @@ $queryCalorieData = new QueryCalorieData();
 if(!empty($_GET['id']))
 {
     //一覧画面から取得した日付
-    
     $result = $queryCalorieData->getDatum($_GET['id']);
 }
 
@@ -28,7 +27,7 @@ if(!empty($_POST['id']))
 
     $caloriedata = new CalorieData();
     $caloriedata->setId($id);
-    $caloriedata->setTxtDate($tgtdate);
+    $caloriedata->setTgtDate($tgtdate);
     $caloriedata->setCategory($tgtcategory);
     $caloriedata->setItem($tgtitem);
     $caloriedata->setCalorie($tgtprice);
@@ -36,7 +35,8 @@ if(!empty($_POST['id']))
 
     $caloriedata->save();
 
-    $tgturl = 'Location: https://ikefukuro40.tech/dailyinput/calorieedit.php?id='.$id;
+    // $tgturl = 'Location: https://ikefukuro40.tech/dailyinput/calorieedit.php?id='.$id;
+    $tgturl = 'Location: http://localhost/dailyinput/calorieedit.php?id='.$id;
 
     header($tgturl);
 }
@@ -76,9 +76,9 @@ if(!empty($_POST['id']))
     <main>
         <div class="errorMsg"></div>
         <div class="container">
-            <form class="mt-4 pb-3" action="calorienew.php" enctype="multipart/form-data" method="post" id="newform">
+            <form class="mt-4 pb-3" action="calorieedit.php" enctype="multipart/form-data" method="post" id="newform">
                 <div class="form-group row">
-                    <label for="calorie_date" class="col-sm-3 col-form-label">カロリー/日</label>
+                    <label for="calorie_date" class="col-sm-3 col-form-label">対象日</label>
                     <div class="col-sm-9">
                     <input type="date" class="form-control" id="tgtdate" name="tgtdate" value="<?php echo $result->getTgtDate(); ?>">
                     </div>
@@ -144,7 +144,7 @@ if(!empty($_POST['id']))
                     </div>
                 </div> -->
                 <div class="mb-5 d-flex justify-content-center align-items-center">
-                    <input type="submit" class="btn btn-primary" value="新規登録" id="buttonNew"></input>
+                    <input type="submit" class="btn btn-primary" value="編集" id="buttonNew"></input>
                 </div>
 
                 <input type="hidden" value="<?php echo $result->getId(); ?>" name="id">

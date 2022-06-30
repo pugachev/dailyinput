@@ -58,8 +58,8 @@ class QueryCalorieData extends connect
 
 
             //stockテーブルの対象itemの値を増やす
-            $stock = new QueryStockData();
-            $stock->reduce($rcvCategory,$rcvItem,$rcvQuantity);
+            // $stock = new QueryStockData();
+            // $stock->reduce($rcvCategory,$rcvItem,$rcvQuantity);
         
             
         }
