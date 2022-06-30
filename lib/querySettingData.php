@@ -73,9 +73,10 @@ class QuerySettingData extends connect
     //     return $maxspending;
     // }
 
-    public function getSettingCalorieMaxData()
+    public function getSettingCalorieMaxData($rcvTgtdate)
     {
-        $stmt = $this->dbh->prepare("SELECT  * FROM settings");
+        $stmt = $this->dbh->prepare("SELECT  * FROM settings where tgtdate=:tgtdate");
+        $stmt->bindParam(':tgtdate', $rcvTgtdate, PDO::PARAM_STR);
         $stmt->execute();
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -91,9 +92,10 @@ class QuerySettingData extends connect
         return $maxcalorie;
     }
 
-    public function getSettingSpendingMaxData()
+    public function getSettingSpendingMaxData($rcvTgtdate)
     {
-        $stmt = $this->dbh->prepare("SELECT  * FROM settings");
+        $stmt = $this->dbh->prepare("SELECT  * FROM settings where tgtdate=:tgtdate");
+        $stmt->bindParam(':tgtdate', $rcvTgtdate, PDO::PARAM_STR);
         $stmt->execute();
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
