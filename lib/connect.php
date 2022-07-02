@@ -1,7 +1,7 @@
 <?php
 class connect
 {
-    // const DB_NAME = "ikefuku40_dailycheck";
+    // const DB_NAME = "ikefuku40_dailyinput";
     const DB_NAME = "dailyinput";
     const HOST = "localhost";
     // const USER = "ikefuku40_mtake";
