@@ -12,6 +12,7 @@
     $preday="";
     $tgtday="";
     $nextdate="";
+    $dispflg=false;
 
     if(!empty($_GET['preday']))
     {
@@ -51,7 +52,10 @@
 
     //目標上限値 - 実際出費額 = 差分出費
     $diffSpending = intval($maxspending) - intval($results['sumprice']);
-
+    if($diffSpending<0)
+    {
+        $dispflg=true;
+    }
 ?>
 <!doctype html>
 <html lang="ja">

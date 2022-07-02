@@ -22,7 +22,7 @@ if(!empty($_POST['id']))
     $tgtdate = $_POST['tgtdate'];
     $tgtcategory = $_POST['category'];
     $tgtitem = $_POST['item'];
-    $tgtprice = $_POST['calorie'];
+    $tgtcalorie = $_POST['calorie'];
     $tgtquantity = $_POST['quantity'];
 
     $caloriedata = new CalorieData();
@@ -30,7 +30,7 @@ if(!empty($_POST['id']))
     $caloriedata->setTgtDate($tgtdate);
     $caloriedata->setCategory($tgtcategory);
     $caloriedata->setItem($tgtitem);
-    $caloriedata->setCalorie($tgtprice);
+    $caloriedata->setCalorie($tgtcalorie);
     $caloriedata->setQuantity($tgtquantity);
 
     $caloriedata->save();

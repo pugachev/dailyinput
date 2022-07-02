@@ -12,6 +12,7 @@
     $preday="";
     $tgtday="";
     $nextdate="";
+    $dispflg=false;
 
     if(!empty($_GET['preday']))
     {
@@ -51,11 +52,10 @@
 
     //目標上限値 - 実際出費額 = 差分出費
     $diffCalorie = intval($maxcalorie) - intval($results['sumcalorie']);
-
-
-
-
-
+    if($diffCalorie<0)
+    {
+        $dispflg=true;
+    }
 ?>
 <!doctype html>
 <html lang="ja">
@@ -92,7 +92,11 @@
                     <div class="row">
                         <div class="h4 col-md-4 result"><p class="text-center">目標上限:<?php echo $maxcalorie; ?></p></div>
                         <div class="h4 col-md-4 result"><p class="text-center">現在出費:<?php echo $results['sumcalorie']; ?></p></div>
-                        <div class="h4 col-md-4 result"><p class="text-center">差分出費:<?php echo $diffCalorie; ?></p></div>
+                        <?php if($dispflg) { ?>
+                        <div class="h4 col-md-4 result"><p class="text-center" style="color:red">差分出費:<?php echo $diffCalorie; ?></p></div>
+                        <?php } else { ?>
+                            <div class="h4 col-md-4 result"><p class="text-center" style="color:blue">差分出費:<?php echo $diffCalorie; ?></p></div>
+                        <?php } ?>
                     </div>
                     <?php if(!empty($results["data"]))
                     { 

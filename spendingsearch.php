@@ -98,6 +98,13 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://getbootstrap.com/docs/4.3/assets/css/docs.min.css" crossorigin="anonymous">
     <style>
+        #alert{
+            text-align: center;
+            width: 70%;
+            margin: 55px auto;
+            font-size:36px;
+            color:red;
+        }
         @media (max-width: 600px) {
             /* .result {
                 font-size: 1rem;
