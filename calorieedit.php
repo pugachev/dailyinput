@@ -9,11 +9,26 @@ header('Cache-Control:no-cache,no-store,must-revalidate,max-age=0');
 header('Cache-Control:pre-check=0,post-check=0',false);
 header('Pragma:no-cache');
 
+$searchCondition="";
+$currentPage="";
+
 $queryCalorieData = new QueryCalorieData();
 if(!empty($_GET['id']))
 {
     //一覧画面から取得した日付
     $result = $queryCalorieData->getDatum($_GET['id']);
+}
+
+if(!empty($_GET['scd']))
+{
+    $searchCondition=$_GET['scd'];
+    $currentPage=$_GET['currentPage'];
+}
+
+//遷移元から貰ったcurrentpageを保存する
+if(!empty($_GET['currentpage']))
+{
+    $currentPage = $_GET['currentpage'];
 }
 
 if(!empty($_POST['id']))
@@ -145,6 +160,9 @@ if(!empty($_POST['id']))
                 </div> -->
                 <div class="mb-5 d-flex justify-content-center align-items-center">
                     <input type="submit" class="btn btn-primary" value="編集" id="buttonNew"></input>
+                    <?php 
+                    print '<a href="caloriesearch.php?scd='.$searchCondition.'&page='.$currentPage.'"  class="btn btn-primary">戻る</a>';
+                    ?>
                 </div>
 
                 <input type="hidden" value="<?php echo $result->getId(); ?>" name="id">
