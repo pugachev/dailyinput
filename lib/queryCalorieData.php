@@ -148,12 +148,16 @@ class QueryCalorieData extends connect
             else if(!empty($startdate) && empty($enddate))
             {
                 $where .= " and tgtdate >= '".$startdate."'";
-                $searchcondition.='startdate='.$startdate;
+                $searchcondition.='startdate='.$startdate.',enddate=';
             }
             else if(empty($startdate) && !empty($enddate))
             {
                 $where .= " and tgtdate <= '".$enddate."'";
-                $searchcondition.='enddate='.$enddate;
+                $searchcondition.='startdate='.',enddate='.$enddate;
+            }
+            else
+            {
+                $searchcondition.='startdate=,enddate=';
             }
 
             //分類
@@ -162,27 +166,32 @@ class QueryCalorieData extends connect
                 $where .= " and category ='".$category."'";
                 $searchcondition.=',category='.$category;
             }
+            else
+            {
+                $searchcondition.=',category=';
+            }
 
             //項目
             if(!empty($item) && ($item!='0000'))
             {
-                $where .= " and item ='".$item."'";
+                $where .= " and dc.item ='".$item."'";
                 $searchcondition.=',item='.$item;
+            }
+            else
+            {
+                $searchcondition.=',item=';
             }
 
             //上記で作成したWhere句で総記事数を取得する
-            $sqlcnt = "SELECT COUNT(*) as totalcnt FROM dailycalorie ";
+            $sqlcnt = "SELECT COUNT(*) as totalcnt FROM dailycalorie  as dc ";
             $sqlcnt .= $where;
             $stmt = $this->dbh->query($sqlcnt);
-            
             $totalcnt= $stmt->fetch(PDO::FETCH_COLUMN);
 
             //上記で作成したWhere句でデータを取得する
             $sqldate = "SELECT  dc.id as id ,dc.tgtdate as tgtdate, dc.category as category,im.itemname as itemname, dc.calorie as calorie,dc.quantity as quantity FROM dailycalorie as dc left join items as im on dc.item = im.item ";
             $sqldate .= $where;
             $sqldate .= " LIMIT ".$start.", 5";
-            // print_r($sqldate);
-            // die();
             $stmt = $this->dbh->query($sqldate);
             $data = $this->setAllData($stmt->fetchAll(PDO::FETCH_ASSOC));
 
@@ -190,7 +199,6 @@ class QueryCalorieData extends connect
             $pager['totalcnt'] = $totalcnt;
             $pager['data'] = $data;
             $pager['searchcondition'] = $searchcondition;
-    
         }
         catch(Exception $ex)
         {
