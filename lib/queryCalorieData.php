@@ -120,6 +120,7 @@ class QueryCalorieData extends connect
 
     /**
      * 指定条件でデータを検索する
+     * ページ番号あり
      */
     public function searchData($startdate,$enddate,$category,$item,$page = 1, $limit = 5)
     {
@@ -209,6 +210,31 @@ class QueryCalorieData extends connect
     }
 
     /**
+     * 指定した日付で合計値を取得する
+     */
+    public function searchDataByDate($tgtdate)
+    {
+        try
+        {
+            // $sql ="SELECT dc.tgtdate as tgtdate, dc.item as item, im.itemname as itemname, sum(dc.calorie) as sumcalorie FROM dailycalorie as dc inner join items as im on  dc.item = im.item group by dc.tgtdate, dc.item HAVING dc.tgtdate ='$tgtdate'";
+            $sql ="SELECT dc.tgtdate as tgtdate, dc.item as item, im.itemname as itemname, sum(dc.calorie) as sumcalorie FROM dailycalorie as dc inner join items as im on  dc.item = im.item group by dc.tgtdate, dc.item HAVING dc.tgtdate ='$tgtdate'";
+            // var_dump($sql);
+            $stmt = $this->dbh->query($sql);
+            $data = $this->setSumData($stmt->fetchAll(PDO::FETCH_ASSOC));
+
+            // var_dump($data);
+            // die();
+        }
+        catch(Exception $ex)
+        {
+            return "DB:Error";
+        }
+
+
+        return $data;
+    }
+
+    /**
      * 指定したIDのデータを取得する
      */
     public function getDatum($id)
@@ -228,6 +254,23 @@ class QueryCalorieData extends connect
         }
 
         return $datum;
+    }
+
+    /**
+     * group byの結果を格納する
+     */
+    public function setSumData($resutls)
+    {
+        $tmp = array();
+        foreach ($resutls as $result) 
+        {
+            $qd = new CalorieData();
+            $qd->setTgtDate($result["tgtdate"]);
+            $qd->setItem($result["item"]);
+            $qd->setCalorie($result["sumcalorie"]);
+            $tmp[] = $qd;
+        }
+        return  $tmp;
     }
 
     /**

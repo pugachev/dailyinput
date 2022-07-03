@@ -9,17 +9,17 @@
     header('Cache-Control:pre-check=0,post-check=0',false);
     header('Pragma:no-cache');
 
-    $preday="";
+    $predate="";
     $tgtday="";
     $nextdate="";
     $dispflg=false;
 
-    if(!empty($_GET['preday']))
+    if(!empty($_GET['predate']))
     {
         //パラメータより本日の日付を取得する
-        $tgtday = $_GET['preday'];
+        $tgtday = $_GET['predate'];
         //システムより前日の日付を取得する
-        $preday = date("Y-m-d",strtotime($tgtday."-1 day"));
+        $predate = date("Y-m-d",strtotime($tgtday."-1 day"));
         //システムより翌日の日付を取得する
         $nextdate = date("Y-m-d",strtotime($tgtday."+1 day"));
     }
@@ -28,14 +28,14 @@
         //パラメータより本日の日付を取得する
         $tgtday = $_GET['nextdate'];
         //システムより前日の日付を取得する
-        $preday = date("Y-m-d",strtotime($tgtday."-1 day"));
+        $predate = date("Y-m-d",strtotime($tgtday."-1 day"));
         //システムより翌日の日付を取得する
         $nextdate = date("Y-m-d",strtotime($tgtday."+1 day"));
     }
     else
     {
         //システムより前日の日付を取得する
-        $preday = date("Y-m-d",strtotime('-1 day'));
+        $predate = date("Y-m-d",strtotime('-1 day'));
         //システムより本日の日付を取得する
         $tgtday = date("Y-m-d");
         //システムより翌日の日付を取得する
@@ -92,7 +92,7 @@
         <main>
             <div class="container-fluid mt-3">
                     <div class="row">
-                        <div class="h5 col-md-4 result"><p class="text-center"><a href="spendinglist.php?preday=<?php echo $preday; ?>" class="btn btn-primary btn-xs">前日</a></p></div>
+                        <div class="h5 col-md-4 result"><p class="text-center"><a href="spendinglist.php?predate=<?php echo $predate; ?>" class="btn btn-primary btn-xs">前日</a></p></div>
                         <div class="h5 col-md-4 result"><p class="text-center"><?php echo $tgtday; ?></p></div>
                         <div class="h5 col-md-4 result"><p class="text-center"><a href="spendinglist.php?nextdate=<?php echo $nextdate; ?>"  class="btn btn-primary btn-xs">翌日</a></p></div>
                     </div>

@@ -11,16 +11,19 @@
                     <a class="nav-link" href="calorielist.php">熱量一覧 <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="calorienew.php">新規作成</a>
+                    <a class="nav-link" href="calorienew.php">熱量作成</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="caloriesearch.php">検索</a>
+                    <a class="nav-link" href="caloriesearch.php">熱量検索</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="spendinglist.php">出費一覧</a>
+                    <a class="nav-link" href="caloriegraph.php">熱量グラフ</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="settingnew.php">設定</a>
+                    <a class="nav-link" href="calorielist.php">出費一覧</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="settingnew.php">総合設定</a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
