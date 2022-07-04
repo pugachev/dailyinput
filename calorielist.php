@@ -85,9 +85,9 @@
         <main>
             <div class="container-fluid mt-3">
                     <div class="row">
-                        <div class="h5 col-md-4 result"><p class="text-center"><a href="calorielist.php?predate=<?php echo $predate; ?>" class="btn btn-primary btn-xs">前日</a></p></div>
-                        <div class="h5 col-md-4 result"><p class="text-center"><a href="caloriegraph.php?tgtday=<?php echo $tgtday; ?>" class="btn btn-primary btn-xs"><?php echo $tgtday; ?></a></p></div>
-                        <div class="h5 col-md-4 result"><p class="text-center"><a href="calorielist.php?nextdate=<?php echo $nextdate; ?>"  class="btn btn-primary btn-xs">翌日</a></p></div>
+                        <div class="h5 col-md-4 result"><p class="text-center"><a href="https://ikefukuro40.tech/dailyinput/calorielist.php?predate=<?php echo $predate; ?>" class="btn btn-primary btn-xs">前日</a></p></div>
+                        <div class="h5 col-md-4 result"><p class="text-center"><a href="https://ikefukuro40.tech/dailyinput/caloriegraph.php?tgtday=<?php echo $tgtday; ?>" class="btn btn-primary btn-xs"><?php echo $tgtday; ?></a></p></div>
+                        <div class="h5 col-md-4 result"><p class="text-center"><a href="https://ikefukuro40.tech/dailyinput/calorielist.php?nextdate=<?php echo $nextdate; ?>"  class="btn btn-primary btn-xs">翌日</a></p></div>
                     </div>
                     <div class="row">
                         <div class="h4 col-md-4 result"><p class="text-center">目標上限:<?php echo $maxcalorie; ?></p></div>
@@ -122,8 +122,8 @@
                             print '<td>'.$data->getItem().'</td>';
                             print '<td>'.$data->getCalorie().'</td>';
                             print '<td>'.$data->getQuantity().'</td>';
-                            print '<td><a href="calorieedit.php?id='.$data->getId().'" class="btn btn-primary btn-xs">編集</a></td>';
-                            print '<td><a href="calorieedit.php" class="btn btn-primary btn-xs">削除</a></td>';
+                            print '<td><a href="https://ikefukuro40.tech/dailyinput/calorieedit.php?id='.$data->getId().'" class="btn btn-primary btn-xs">編集</a></td>';
+                            print '<td><a href="https://ikefukuro40.tech/dailyinput/calorieedit.php" class="btn btn-primary btn-xs">削除</a></td>';
                             print '</tr>';
                         }
                         print '</tbody>';
@@ -145,12 +145,12 @@
                         {
                             if($i==$currentpage)
                             {
-                                print '<li class="page-item active"><a class="page-link" href="spendinglist.php?page='.$i.'">'.$i.'</a></li>';
+                                print '<li class="page-item active"><a class="page-link" href="https://ikefukuro40.tech/dailyinput/calorielist.php?page='.$i.'">'.$i.'</a></li>';
                             }
                             else
                             {
 
-                                print '<li class="page-item"><a class="page-link" href="spendinglist.php?page='.$i.'">'.$i.'</a></li>';
+                                print '<li class="page-item"><a class="page-link" href="https://ikefukuro40.tech/dailyinput/calorielist.php?page='.$i.'">'.$i.'</a></li>';
                             }
                         }
                         print '</ul>';

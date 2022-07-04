@@ -37,7 +37,7 @@
         $tgtlink=[];
         for($j=0;$j<($results['totalcnt']/$limit);$j++)
         {
-            $tgtlink[$j]="caloriesearch.php?page=".($j+1);
+            $tgtlink[$j]="https://ikefukuro40.tech/dailyinput/caloriesearch.php?page=".($j+1);
             for($i=0;$i<count($searchconditions);$i++)
             {
                 if(!empty($searchconditions[$i]))
@@ -79,7 +79,7 @@
         $tgtlink=[];
         for($j=0;$j<($results['totalcnt']/$limit);$j++)
         {
-            $tgtlink[$j]="caloriesearch.php?page=".($j+1);
+            $tgtlink[$j]="https://ikefukuro40.tech/dailyinput/caloriesearch.php?page=".($j+1);
             for($i=0;$i<count($searchconditions);$i++)
             {
                 if(!empty($searchconditions[$i]))
@@ -125,7 +125,7 @@
         $tgtlink=[];
         for($j=0;$j<($results['totalcnt']/$limit);$j++)
         {
-            $tgtlink[$j]="caloriesearch.php?page=".($j+1);
+            $tgtlink[$j]="https://ikefukuro40.tech/dailyinput/caloriesearch.php?page=".($j+1);
             for($i=0;$i<count($searchconditions);$i++)
             {
                 if(!empty($searchconditions[$i]))
@@ -175,7 +175,7 @@
         $tgtlink=[];
         for($j=0;$j<($results['totalcnt']/$limit);$j++)
         {
-            $tgtlink[$j]="caloriesearch.php?page=".($j+1);
+            $tgtlink[$j]="https://ikefukuro40.tech/dailyinput/caloriesearch.php?page=".($j+1);
             for($i=0;$i<count($searchconditions);$i++)
             {
                 if(!empty($searchconditions[$i]))
@@ -222,7 +222,7 @@
     <div class="container mb-3">
         <main>
             <div class="container">
-                <form class="mt-4 pb-3" action="caloriesearch.php" method="post" id="searchForm">
+                <form class="mt-4 pb-3" action="https://ikefukuro40.tech/dailyinput/caloriesearch.php" method="post" id="searchForm">
                     <div class="form-group row ">
                         <label for="tgtdate" class="col-sm-3 col-lg-1 col-form-label">開始</label>
                         <div class="col-sm-9 col-lg-5">
@@ -303,8 +303,8 @@
                             print '<td>'.$data->getQuantity().'</td>';
                             // print '<td><a href="calorieedit.php?id='.$data->getId()."'" class="btn btn-primary btn-xs">編集</a></td>';
                             // print '<td><a href="calorieedit.php?id='.$data->getId().'&scd='.aaa.'" class="btn btn-primary btn-xs">編集</a></td>';
-                            print '<td><a href="calorieedit.php?id='.$data->getId().'&scd='.$results["searchcondition"].'&currentpage='.$currentpage.'" class="btn btn-primary btn-xs">編集</a></td>';
-                            print '<td><a href="calorieedit.php" class="btn btn-primary btn-xs">削除</a></td>';
+                            print '<td><a href="https://ikefukuro40.tech/dailyinput/calorieedit.php?id='.$data->getId().'&scd='.$results["searchcondition"].'&currentpage='.$currentpage.'" class="btn btn-primary btn-xs">編集</a></td>';
+                            print '<td><a href="https://ikefukuro40.tech/dailyinput/calorieedit.php" class="btn btn-primary btn-xs">削除</a></td>';
                             print '</tr>';
                         }
                         print '</tbody>';

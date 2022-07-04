@@ -8,22 +8,22 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="spendinglist.php">出費一覧<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="https://ikefukuro40.tech/dailyinput/spendinglist.php">出費一覧<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="spendingnew.php">出費作成</a>
+                    <a class="nav-link" href="https://ikefukuro40.tech/dailyinput/spendingnew.php">出費作成</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="spendingsearch.php">出費検索</a>
+                    <a class="nav-link" href="https://ikefukuro40.tech/dailyinput/spendingsearch.php">出費検索</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="spendinggraph.php">出費グラフ</a>
+                    <a class="nav-link" href="https://ikefukuro40.tech/dailyinput/spendinggraph.php">出費グラフ</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="spendinglist.php">熱量一覧</a>
+                    <a class="nav-link" href="https://ikefukuro40.tech/dailyinput/calorielist.php">熱量一覧</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="settingnew.php">総合設定</a>
+                    <a class="nav-link" href="https://ikefukuro40.tech/dailyinput/settingnew.php">総合設定</a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">

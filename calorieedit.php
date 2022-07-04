@@ -50,8 +50,8 @@ if(!empty($_POST['id']))
 
     $caloriedata->save();
 
-    // $tgturl = 'Location: https://ikefukuro40.tech/dailyinput/calorieedit.php?id='.$id;
-    $tgturl = 'Location: http://localhost/dailyinput/calorieedit.php?id='.$id;
+    $tgturl = 'Location: https://ikefukuro40.tech/dailyinput/calorieedit.php?id='.$id;
+    // $tgturl = 'Location: http://localhost/dailyinput/calorieedit.php?id='.$id;
 
     header($tgturl);
 }
@@ -91,7 +91,7 @@ if(!empty($_POST['id']))
     <main>
         <div class="errorMsg"></div>
         <div class="container">
-            <form class="mt-4 pb-3" action="calorieedit.php" enctype="multipart/form-data" method="post" id="newform">
+            <form class="mt-4 pb-3" action="https://ikefukuro40.tech/dailyinput/calorieedit.php" enctype="multipart/form-data" method="post" id="newform">
                 <div class="form-group row">
                     <label for="calorie_date" class="col-sm-3 col-form-label">対象日</label>
                     <div class="col-sm-9">
